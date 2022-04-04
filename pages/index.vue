@@ -86,35 +86,32 @@
           <div class="col-md-5">
             Item Name
           </div>
-          <div class="col-md-2">
+          <div class="col-md-1-5">
             Qty.
           </div>
-          <div class="col-md-2">
+          <div class="col-md-3">
             Price
           </div>
-          <div class="col-md-2">
+          <div class="col-md-2-5">
             Total
           </div>
-          <div class="col-md-1">
-            X
-          </div>
         </div>
-        <div class="row">
+        <div class="row d-flex align-items-center">
           <div class="col-md-5">
-            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" value="ooga booga">
+            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" value="Email Design">
           </div>
-          <div class="col-md-2">
-            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" value="ooga booga">
+          <div class="col-md-1-5">
+            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" value="1">
           </div>
-          <div class="col-md-2">
-            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" value="ooga booga">
+          <div class="col-md-3">
+            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" value="156.00">
           </div>
-          <div class="col-md-2">
-            115.00
+          <div class="col-md-2-5 text-light small-12 fw-medium">
+            115.00 
+            <img class="float-end" src="/assets/icon-delete.svg" alt="Delete">
           </div>
-          <div class="col-md-1">
-            <img src="/assets/icon-delete.svg" alt="Delete">
-          </div>
+          <!-- <div class="col-md-1"> -->
+          <!-- </div> -->
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -140,12 +137,12 @@
 
     <div class="fixed-top h-100 bg-dark-blue text-white d-flex flex-column align-items-start" style="width: 90px; z-index: 9999;">
       <div class="mb-auto text-center mx-auto py-3 bg-dark w-100" style="padding-bottom: 100%;">
-        <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+        <a @click="alert('Toggle slides.')" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
           <img src="/assets/logo.svg" alt="Logo">
         </a>
       </div>
       <div class="w-100 mx-auto text-center py-3">
-        <img src="/assets/icon-moon.svg" alt="Toggle Light/Dark Mode">
+        <img @click="alert('Toggle light/dark mode.')" src="/assets/icon-moon.svg" alt="Toggle Light/Dark Mode">
         <hr class="">
         <img src="/assets/image-avatar.jpg" class="rounded-full" alt="Image Avatar">
       </div>
@@ -161,10 +158,10 @@
           </span>
         </div>
         <div class="col-md-5 ps-0 text-end">
-          <button class="d-inline bg-transparent fw-medium border-0 small-12 me-3">
+          <button @click="alert('Filter invoices.')" class="d-inline bg-transparent fw-medium border-0 small-12 me-3">
             Filter by status <img src="/assets/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
           </button>
-          <button class="btn d-inline bg-purple btn-round text-white small-12 p-2 fw-medium ">
+          <button @click="alert('Create new invoice.')" class="btn d-inline bg-purple btn-round text-white small-12 p-2 fw-medium ">
             <div class="d-inline-flex align-items-center me-2 justify-content-center text-dark btn-round bg-white p-2" style="height: 30px; width: 30px;">
               <img src="/assets/icon-plus.svg" alt="">
             </div>
@@ -181,7 +178,7 @@
         <div v-for="(invoice, index) in store.invoices" :key="index" class="offset-md-2 col-md-8 bg-white text-light rounded px-4 py-3 mb-3 shadow">
           <nuxt-link :to="'/invoice/' + invoice.id">
             <div class="container p-0">
-              <div class="row small-12 d-flex align-items-center">
+              <div class="row small-12 align-items-center">
                 <div class="col-md-2 fw-mediumer">
                   #{{ invoice.id }}
                 </div>
@@ -194,7 +191,7 @@
                 <div class="col-md-1 small-16 text-dark fw-medium">
                   £{{ invoice.total }}
                 </div>
-                <div class="col-md-3 text-end py-0">
+                <div class="col-md-3 text-end float-end py-0">
                   <div v-if="invoice.status === 'pending'" class="d-inline-block w-104 text-orange bg-orange small-12 fw-medium p-3 ms-3 text-center rounded">
                     • {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
                   </div>
@@ -214,7 +211,7 @@
 
 <script>
 import { defineComponent } from '@vue/composition-api'
-import { useStore } from '~~/stores/store'
+import { useStore } from '~/stores/store'
 
 export default defineComponent({
   setup() {
@@ -222,7 +219,19 @@ export default defineComponent({
   },
   data() {
     return {
-      store: useStore(),
+      store: null,
+    }
+  },
+  async created() {
+    try {
+      this.store = useStore()
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  methods: {
+    alert: function (msg) {
+      alert(msg)
     }
   }
 })
@@ -324,5 +333,15 @@ a {
 
 .shadow {
   box-shadow: rgba(72,84,159,.1);
+}
+
+.col-md-1-5 {
+  flex: 0 0 auto;
+  width: 12%;
+}
+
+.col-md-2-5 {
+  flex: 0 0 auto;
+  width: 21%;
 }
 </style>

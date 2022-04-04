@@ -1,5 +1,43 @@
 <template>
   <div>
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+      <div class="modal-dialog d-flex align-items-center h-100 pb-5 p-2">
+        <div class="modal-content p-3">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="markPaidModal" tabindex="-1" aria-labelledby="markPaidModal" aria-hidden="true">
+      <div class="modal-dialog d-flex align-items-center h-100 pb-5 p-2">
+        <div class="modal-content p-3">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="container mt-5 small-11">
       <div class="row"> 
         <div class="offset-md-2 col-md-8 fw-medium">
@@ -17,13 +55,13 @@
             </div>
           </div>
           <div class="d-inline float-end">
-            <button class="btn bg-light text-light text-dark btn-round small-12 p-3 px-4 fw-medium me-2">
+            <button @click="alert('Toggle edit slide.')" class="btn bg-light text-light text-dark btn-round small-12 p-3 px-4 fw-medium me-2">
               Edit
             </button>
-            <button class="btn bg-red text-white btn-round small-12 p-3 px-4 fw-medium me-2">
+            <button data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn bg-red text-white btn-round small-12 p-3 px-4 fw-medium me-2">
               Delete
             </button>
-            <button class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium">
+            <button data-bs-toggle="modal" data-bs-target="#markPaidModal" class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium">
               Mark as Paid
             </button>
           </div>
@@ -77,7 +115,7 @@
             </div>
           </div>
 
-          <div class="bg-light mx-4">
+          <div class="bg-light mx-4 rounded-top">
             <div class="container py-4 px-4 mt-5">
               <div class="row">
                 <div class="col-md-6">
@@ -112,7 +150,7 @@
             </div>
           </div>
 
-          <div class="bg-dark-blue text-white mx-4">
+          <div class="bg-dark-blue text-white mx-4 rounded-bottom">
             <div class="container py-4 px-4">
               <div class="row">
                 <div class="col-md-6">
@@ -136,7 +174,7 @@
 
 <script>
 import { defineComponent } from '@vue/composition-api'
-import { useStore } from '~~/stores/store'
+import { useStore } from '~/stores/store'
 
 export default defineComponent({
   setup() {
@@ -144,12 +182,61 @@ export default defineComponent({
   },
   data() {
     return {
-      invoice: {},
-      store: useStore(),
+      invoice: 
+        {
+          "id": "",
+          "createdAt": "",
+          "paymentDue": "",
+          "description": "",
+          "paymentTerms": 1,
+          "clientName": "",
+          "clientEmail": "",
+          "status": "",
+          "senderAddress": {
+            "street": "",
+            "city": "",
+            "postCode": "",
+            "country": ""
+          },
+          "clientAddress": {
+            "street": "",
+            "city": "",
+            "postCode": "",
+            "country": ""
+          },
+          "items": [
+            {
+              "name": "",
+              "quantity": 1,
+              "price": 0,
+              "total": 0
+            }
+          ],
+          "total": 0
+        },
+      store: null,
     }
   },
-  created () {
-    this.invoice = this.store.invoices.find(x => x.id === this.$route.params.id)
+  // mounted() {
+  //   window.scrollTo(0,0)
+  // },
+  async mounted() {
+    try {
+      let id = this.$route.params.id
+
+      this.invoice = useStore().invoices.find(x => x.id === id)
+
+      if (!this.invoice || !id) {
+        console.log('no go')
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  methods: {
+    alert: function (msg) {
+      alert(msg)
+    }
   }
 })
 </script>
@@ -178,5 +265,15 @@ export default defineComponent({
 
 .text-light {
   color: #858BB2!important;
+}
+
+.rounded-top {
+  border-top-left-radius: 8px!important;
+  border-top-right-radius: 8px!important;
+}
+
+.rounded-bottom {
+  border-bottom-right-radius: 8px!important;
+  border-bottom-left-radius: 8px!important;
 }
 </style>
