@@ -2,38 +2,38 @@
   <div>
     <div class="container mt-5 small-11">
       <div class="row"> 
-        <div class="offset-md-2 col-md-8">
+        <div class="offset-md-2 col-md-8 fw-medium">
           <nuxt-link to="/">
+            <img src="/assets/icon-arrow-left.svg" alt="Go Back Arrow" class="me-3">
             Go back
           </nuxt-link>
-           {{ invoice }}
+           <!-- {{ invoice }} -->
         </div>
-        <div class="offset-md-2 col-md-8 bg-white mt-4 p-3 d-flex align-items-center justify-content-between">
-          
-          <div class="d-inline">
+        <div class="offset-md-2 col-md-8 bg-white mt-4 p-4 d-flex align-items-center justify-content-between rounded shadow">
+          <div class="d-inline small-12 text-light">
             Status
-            <div class="d-inline bg-dark p-2 ms-3 text-white rounded">
+            <div class="d-inline text-orange bg-orange small-12 fw-medium p-2 p-3 ms-3 rounded">
               • Pending
             </div>
           </div>
           <div class="d-inline float-end">
-            <button class="btn btn-light">
+            <button class="btn bg-light text-light text-dark btn-round small-12 p-3 px-4 fw-medium me-2">
               Edit
             </button>
-            <button class="btn btn-danger">
+            <button class="btn bg-red text-white btn-round small-12 p-3 px-4 fw-medium me-2">
               Delete
             </button>
-            <button class="btn btn-primary">
+            <button class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium">
               Mark as Paid
             </button>
           </div>
         </div>
-        <div class="offset-md-2 col-md-8 bg-white mt-3 p-3 py-5">
+        <div class="offset-md-2 col-md-8 bg-white text-light mt-3 p-3 py-5 mb-5 rounded shadow">
           
           <div class="container">
             <div class="row">
               <div class="col-md-6">
-                <span class="fw-bold mb-2 fs-6">
+                <span class="fw-medium mb-2 small-15">
                   {{ '#' + invoice.id }}
                 </span> <br>
                 {{ invoice.description }}
@@ -48,19 +48,19 @@
             <div class="row mt-4">
               <div class="col-md-3">
                 Invoice Date <br>
-                <span class="d-block fw-bold mt-2 fs-6">
+                <span class="d-block text-dark fw-medium mt-2 small-15">
                   {{ invoice.createdAt }}
                 </span> <br>
 
                 Payment Due <br>
-                <span class="d-block fw-bold mt-2 fs-6">
+                <span class="d-block text-dark fw-medium mt-2 small-15">
                   {{ invoice.paymentDue }}
                 </span>
               </div>
               <div class="col-md-4">
                 Bill To <br>
 
-                <span class="d-block fw-bold mt-2 fs-6"> 
+                <span class="d-block text-dark fw-medium mt-2 small-15"> 
                   {{ invoice.clientName }}
                 </span> <br>
                 {{ invoice.clientAddress.street }} <br>
@@ -70,7 +70,7 @@
               </div>
               <div class="col-md-5">
                 Sent To <br>
-                <span class="d-block fw-bold mt-2 fs-6"> 
+                <span class="d-block text-dark fw-medium mt-2 small-15"> 
                   {{ invoice.clientEmail }}
                 </span> 
               </div>
@@ -94,18 +94,18 @@
                 </div>
               </div>
 
-              <div v-for="(item, index) in invoice.items" :key="index" class="row mt-3">
-                <div class="col-md-6 fw-bold">
+              <div v-for="(item, index) in invoice.items" :key="index" class="row small-12 mt-3">
+                <div class="col-md-6 text-dark fw-medium">
                   {{ item.name }}
                 </div>
                 <div class="col-md-2">
                   {{ item.quantity }}
                 </div>
-                <div class="col-md-2 text-end">
-                  {{ item.price }}
+                <div class="col-md-2 fw-medium text-end">
+                  {{ '£ ' + item.price }}
                 </div>
-                <div class="col-md-2 text-end">
-                  {{ item.total }}
+                <div class="col-md-2 text-dark fw-medium text-end">
+                  {{ '£ ' + item.total }}
                 </div>
               </div>
 
@@ -119,9 +119,9 @@
                   Amount Due
                 </div>
                 <div class="col-md-6 text-end">
-                  <h1 class="mb-0">
-                  {{ invoice.total }}
-                  </h1>
+                  <span class="small-24 fw-medium mb-0">
+                  {{ '£ ' + invoice.total }}
+                  </span>
                 </div>
               </div>
             </div>
@@ -162,5 +162,21 @@ export default defineComponent({
 
 .bg-light {
   background-color: #F9FAFE!important;
+}
+
+.bg-purple {
+  background-color: #7C5DFA;
+}
+
+.bg-red {
+  background-color: #EC5757;
+}
+
+.btn-round {
+  border-radius: 1000px;
+}
+
+.text-light {
+  color: #858BB2!important;
 }
 </style>
