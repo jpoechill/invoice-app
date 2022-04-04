@@ -108,7 +108,7 @@
           </div>
           <div class="col-md-2-5 text-light small-12 fw-medium">
             115.00 
-            <img class="float-end" src="/assets/icon-delete.svg" alt="Delete">
+            <img class="float-end" src="/static/icon-delete.svg" alt="Delete">
           </div>
           <!-- <div class="col-md-1"> -->
           <!-- </div> -->
@@ -138,13 +138,13 @@
     <div class="fixed-top h-100 bg-dark-blue text-white d-flex flex-column align-items-start" style="width: 90px; z-index: 9999;">
       <div class="mb-auto text-center mx-auto py-3 bg-dark w-100" style="padding-bottom: 100%;">
         <a @click="alert('Toggle slides.')" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-          <img src="/assets/logo.svg" alt="Logo">
+          <img src="/static/logo.svg" alt="Logo">
         </a>
       </div>
       <div class="w-100 mx-auto text-center py-3">
-        <img @click="alert('Toggle light/dark mode.')" src="/assets/icon-moon.svg" alt="Toggle Light/Dark Mode">
+        <img @click="alert('Toggle light/dark mode.')" src="/static/icon-moon.svg" alt="Toggle Light/Dark Mode">
         <hr class="">
-        <img src="/assets/image-avatar.jpg" class="rounded-full" alt="Image Avatar">
+        <img src="/static/image-avatar.jpg" class="rounded-full" alt="Image Avatar">
       </div>
     </div>
 
@@ -159,11 +159,11 @@
         </div>
         <div class="col-md-5 ps-0 text-end">
           <button @click="alert('Filter invoices.')" class="d-inline bg-transparent fw-medium border-0 small-12 me-3">
-            Filter by status <img src="/assets/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
+            Filter by status <img src="/static/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
           </button>
           <button @click="alert('Create new invoice.')" class="btn d-inline bg-purple btn-round text-white small-12 p-2 fw-medium ">
             <div class="d-inline-flex align-items-center me-2 justify-content-center text-dark btn-round bg-white p-2" style="height: 30px; width: 30px;">
-              <img src="/assets/icon-plus.svg" alt="">
+              <img src="/static/icon-plus.svg" alt="">
             </div>
             <span class="d-inline-block me-2">
               New Invoice 

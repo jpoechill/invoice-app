@@ -42,7 +42,7 @@
       <div class="row"> 
         <div class="offset-md-2 col-md-8 fw-medium">
           <nuxt-link to="/">
-            <img src="/assets/icon-arrow-left.svg" alt="Go Back Arrow" class="me-3">
+            <img src="/static/icon-arrow-left.svg" alt="Go Back Arrow" class="me-3">
             Go back
           </nuxt-link>
            <!-- {{ invoice }} -->
