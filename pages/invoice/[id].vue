@@ -76,7 +76,7 @@
                 </span> <br>
                 {{ invoice.description }}
               </div>
-              <div class="col-md-6 text-end">
+              <div class="col-md-6 text-end line-height">
                 {{ invoice.senderAddress.street }} <br>
                 {{ invoice.senderAddress.city }}  <br>
                 {{ invoice.senderAddress.postCode }}  <br>
@@ -86,13 +86,13 @@
             <div class="row mt-4">
               <div class="col-md-3">
                 Invoice Date <br>
-                <span class="d-block text-dark fw-medium mt-2 small-15">
-                  {{ invoice.createdAt }}
+                <span class="d-block text-dark fw-medium mt-2 mb-3 small-15">
+                  {{ convertDate(invoice.createdAt) }}
                 </span> <br>
 
                 Payment Due <br>
                 <span class="d-block text-dark fw-medium mt-2 small-15">
-                  {{ invoice.paymentDue }}
+                  {{ convertDate(invoice.paymentDue) }}
                 </span>
               </div>
               <div class="col-md-4">
@@ -100,11 +100,13 @@
 
                 <span class="d-block text-dark fw-medium mt-2 small-15"> 
                   {{ invoice.clientName }}
-                </span> <br>
-                {{ invoice.clientAddress.street }} <br>
-                {{ invoice.clientAddress.city }}  <br>
-                {{ invoice.clientAddress.postCode }}  <br>
-                {{ invoice.clientAddress.country }} 
+                </span> 
+                <span class="d-block mt-2 line-height">
+                  {{ invoice.clientAddress.street }} <br>
+                  {{ invoice.clientAddress.city }}  <br>
+                  {{ invoice.clientAddress.postCode }}  <br>
+                  {{ invoice.clientAddress.country }} 
+                </span>
               </div>
               <div class="col-md-5">
                 Sent To <br>
@@ -217,9 +219,6 @@ export default defineComponent({
       store: null,
     }
   },
-  // mounted() {
-  //   window.scrollTo(0,0)
-  // },
   async mounted() {
     try {
       let id = this.$route.params.id
@@ -236,6 +235,12 @@ export default defineComponent({
   methods: {
     alert: function (msg) {
       alert(msg)
+    },
+    convertDate: (date) => {
+      date = date.split('-')
+      let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      
+      return Number(date[2]) + ' ' + months[Number(date[1])] + ' ' + date[0]
     }
   }
 })
@@ -275,5 +280,9 @@ export default defineComponent({
 .rounded-bottom {
   border-bottom-right-radius: 8px!important;
   border-bottom-left-radius: 8px!important;
+}
+
+.line-height {
+  line-height: 20px;
 }
 </style>

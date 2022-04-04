@@ -158,9 +158,23 @@
           </span>
         </div>
         <div class="col-md-5 ps-0 text-end">
-          <button @click="alert('Filter invoices.')" class="d-inline bg-transparent fw-medium border-0 small-12 me-3">
+          <button class="d-inline bg-transparent fw-medium border-0 small-12 me-3">
             Filter by status <img src="/static/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
           </button>
+
+         <div class="dropdown d-inline">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Dropdown button
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <div class="dropdown-item">Action</div>
+              <div class="dropdown-item">Action</div>
+              <div class="dropdown-item">Action</div>
+              <div class="dropdown-item">Action</div>
+            </div>
+          </div>
+
+
           <button @click="alert('Create new invoice.')" class="btn d-inline bg-purple btn-round text-white small-12 p-2 fw-medium ">
             <div class="d-inline-flex align-items-center me-2 justify-content-center text-dark btn-round bg-white p-2" style="height: 30px; width: 30px;">
               <img src="/static/icon-plus.svg" alt="">
@@ -183,15 +197,15 @@
                   #{{ invoice.id }}
                 </div>
                 <div class="col-md-3 fw-mediumer">
-                  {{ invoice.paymentDue }}
+                  Due {{ convertDate(invoice.paymentDue) }}
                 </div>
-                <div class="col-md-3 fw-mediumer">
+                <div class="col-md-2-5 fw-mediumer">
                   {{ invoice.clientName }}
                 </div>
-                <div class="col-md-1 small-16 text-dark fw-medium">
-                  £{{ invoice.total }}
+                <div class="col-md-2 small-15 p-0 text-dark fw-medium">
+                  £ {{ invoice.total }}
                 </div>
-                <div class="col-md-3 text-end float-end py-0">
+                <div class="col-md-2-5 text-end float-end py-0">
                   <div v-if="invoice.status === 'pending'" class="d-inline-block w-104 text-orange bg-orange small-12 fw-medium p-3 ms-3 text-center rounded">
                     • {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
                   </div>
@@ -213,10 +227,8 @@
 import { defineComponent } from '@vue/composition-api'
 import { useStore } from '~/stores/store'
 
-export default defineComponent({
-  setup() {
-    
-  },
+export default {
+  name: 'AppHeader',
   data() {
     return {
       store: null,
@@ -232,9 +244,15 @@ export default defineComponent({
   methods: {
     alert: function (msg) {
       alert(msg)
+    },
+    convertDate: (date) => {
+      date = date.split('-')
+      let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      
+      return Number(date[2]) + ' ' + months[Number(date[1])] + ' ' + date[0]
     }
   }
-})
+}
 </script>
 
 
@@ -342,6 +360,41 @@ a {
 
 .col-md-2-5 {
   flex: 0 0 auto;
-  width: 21%;
+  width: 20.83333%;
 }
+
+
+
+.btn-dropdown, .btn-dropdown:hover {
+  color: white;
+}
+
+.btn-dropdown:focus {
+  box-shadow: none;
+}
+
+.dropdown-menu {
+  width: 250px;
+  padding: 0px;
+  padding-top: 6px;
+  padding-bottom: 4px;
+  padding-right: 0px;
+  margin-left: 14px;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0px 5px 30px 10px rgba(0,0,0,0.1);
+}
+
+.dropdown-item {
+  padding-right: 22px;
+  padding-left: 22px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.dropdown-item:focus, .dropdown-item:hover {
+    color: #AD1FEA!important;
+    background-color: transparent !important;
+}
+
 </style>
