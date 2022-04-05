@@ -1,25 +1,161 @@
 <template>
   <div>
-    <!-- Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
-      <div class="modal-dialog d-flex align-items-center h-100 pb-5 p-2">
-        <div class="modal-content p-3">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Edit Modal -->
+    <div class="offcanvas offcanvas-start" style="padding-left: 90px; width: 750px;" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+      <div class="container bg-white p-5 offcanvas-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="small-24">
+              <span class="fw-medium">Edit</span> #<span class="fw-medium">{{ invoice.id }}</span>
+            </div>
           </div>
-          <div class="modal-body">
-            ...
+        </div>
+
+        <div class="row mt-4 small-12 text-light-purple">
+          <div class="col-md-12 mb-3 fw-medium text-purple">
+            Bill From
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+          <div class="col-md-12">
+            Street Address <br>
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :value="invoice.senderAddress.street" type="text">
+          </div>
+        </div>
+        <div class="row small-12 text-light-purple">
+          <div class="col-md-4">
+            City <br>
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" type="text"  :value="invoice.senderAddress.city">
+          </div>
+          <div class="col-md-4">
+            Post Code <br>
+            <input class="form-control mt-2 small-12 fw-medium p-3" type="text"  :value="invoice.senderAddress.postCode">
+          </div>
+          <div class="col-md-4">
+            Country <br>
+            <input class="form-control mt-2 small-12 fw-medium p-3" type="text"  :value="invoice.senderAddress.country">
+          </div>
+        </div>
+
+        <div class="row mt-4 small-12 text-light-purple">
+          <div class="col-md-12 mb-3 fw-medium text-purple">
+            Bill To
+          </div>
+          <div class="col-md-12 mt-2">
+            Client's Name <br>
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :value="invoice.clientName" type="text">
+          </div>
+          <div class="col-md-12 mt-2">
+            Client's Email <br>
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :value="invoice.clientEmail"  type="text">
+          </div>
+          <div class="col-md-12 mt-2">
+            Street Address <br>
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :value="invoice.clientAddress.street"  type="text">
+          </div>
+        </div>
+        <div class="row small-12 text-light-purple">
+          <div class="col-md-4 mt-2">
+            City <br>
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" type="text" :value="invoice.clientAddress.city" >
+          </div>
+          <div class="col-md-4 mt-2">
+            Post Code <br>
+            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" :value="invoice.clientAddress.postCode">
+          </div>
+          <div class="col-md-4 mt-2">
+            Country <br>
+            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" :value="invoice.clientAddress.country" >
+          </div>
+        </div>
+        <div class="row mt-4 small-12 text-light-purple">
+          <div class="col-md-6">
+            Invoice Date <br>
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" type="text" value="London">
+          </div>
+          <div class="col-md-6">
+            Payment Terms <br>
+            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" :value="invoice.paymentTerms">
+          </div>
+          <div class="col-md-12 mt-2">
+            Project Description
+            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" :value="invoice.description" >
+          </div>
+        </div>
+        <div class="row small-12 text-light-purple">
+          <div class="col-md-12 mt-4 mb-3 fw-medium small-18">
+            Item List
+          </div>
+          <div class="col-md-5">
+            Item Name
+          </div>
+          <div class="col-md-1-5">
+            Qty.
+          </div>
+          <div class="col-md-3">
+            Price
+          </div>
+          <div class="col-md-2-5">
+            Total
+          </div>
+        </div>
+        <div v-for="(item, index) in invoice.items" :key="index" class="row d-flex align-items-center mb-2">
+          <div class="col-md-5">
+            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" :value="item.name" placeholder="Web development">
+          </div>
+          <div class="col-md-1-5">
+            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" :value="item.quantity">
+          </div>
+          <div class="col-md-3">
+            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" :value="item.price" placeholder="99.99">
+          </div>
+          <div class="col-md-2-5 text-light small-12 fw-medium">
+            {{ item.quantity * item.price }}
+            <img class="float-end" @click="removeInvoiceItem(index)" role="button" src="/icon-delete.svg" alt="Delete">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <button @click="addNewInvoiceItem()" class="btn bg-light text-light text-dark btn-round small-12 w-100 p-3 my-3 px-4 fw-medium me-2">
+              + Add New Item
+            </button>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <div class="float-end">
+              <button class="btn bg-light text-light text-dark btn-round small-12 p-3 px-4 fw-medium me-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample">
+                Cancel
+              </button>
+              <button class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium">
+                Save Changes
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Confirm Deletion Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+      <div class="modal-dialog d-flex align-items-center h-100 pb-5 p-2">
+        <div class="modal-content rounded p-3">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title fw-medium small-24" id="exampleModalLabel">
+              Confirm Deletion
+            </h5>
+            <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+          </div>
+          <div class="modal-body text-light small-12">
+            Are you sure you want to delete invoice #XM9141? This action cannot be undone.
+          </div>
+          <div class="modal-footer border-0">
+            <button class="btn bg-light text-light text-dark btn-round small-12 p-3 px-4 fw-medium me-2" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button"  data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn bg-red text-white btn-round small-12 p-3 px-4 fw-medium me-2">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Temp Modal, Might Delete -->
     <div class="modal fade" id="markPaidModal" tabindex="-1" aria-labelledby="markPaidModal" aria-hidden="true">
       <div class="modal-dialog d-flex align-items-center h-100 pb-5 p-2">
         <div class="modal-content p-3">
@@ -55,13 +191,13 @@
             </div>
           </div>
           <div class="d-inline float-end">
-            <button @click="alert('Toggle edit slide.')" class="btn bg-light text-light text-dark btn-round small-12 p-3 px-4 fw-medium me-2">
+            <button class="btn bg-light text-light text-dark btn-round small-12 p-3 px-4 fw-medium me-2" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
               Edit
             </button>
             <button data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn bg-red text-white btn-round small-12 p-3 px-4 fw-medium me-2">
               Delete
             </button>
-            <button data-bs-toggle="modal" data-bs-target="#markPaidModal" class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium">
+            <button @click="alert('Mark invoice as Paid')" class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium">
               Mark as Paid
             </button>
           </div>
@@ -225,6 +361,8 @@ export default defineComponent({
 
       this.invoice = useStore().invoices.find(x => x.id === id)
 
+      window.scrollTo(0, 0)
+
       if (!this.invoice || !id) {
         console.log('no go')
       }
@@ -235,6 +373,18 @@ export default defineComponent({
   methods: {
     alert: function (msg) {
       alert(msg)
+    },
+    addNewInvoiceItem: function () {
+      this.invoice.items.push(
+        {
+          "name": "",
+          "quantity": 1,
+          "price": "",
+          "total": ""
+        })
+    },
+    removeInvoiceItem: function (index) {
+      this.invoice.items.splice(index, 1)
     },
     convertDate: (date) => {
       date = date.split('-')
@@ -258,6 +408,10 @@ export default defineComponent({
 
 .bg-purple {
   background-color: #7C5DFA;
+}
+
+.bg-light-purple {
+  background-color: #9277FF!important;
 }
 
 .bg-red {
