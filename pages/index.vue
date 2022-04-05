@@ -158,20 +158,40 @@
           </span>
         </div>
         <div class="col-md-5 ps-0 text-end">
-          <button class="d-inline bg-transparent fw-medium border-0 small-12 me-3">
-            Filter by status <img src="/static/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
-          </button>
+
+          <div class="btn-group">
 
          <div class="dropdown d-inline">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown button
+            <button class="d-inline bg-transparent fw-medium border-0 small-12 ps-3 me-4" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Filter by status <img src="/static/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <div class="dropdown-item">Action</div>
-              <div class="dropdown-item">Action</div>
-              <div class="dropdown-item">Action</div>
-              <div class="dropdown-item">Action</div>
+            <div class="dropdown-menu small-12 p-2 pt-3 pb-2 mt-3" aria-labelledby="dropdownMenuButton">
+              <div class="dropdown-item fw-medium py-0">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                  <label class="form-check-label pt-1-5" for="flexCheckChecked">
+                    Draft
+                  </label>
+                </div>
+              </div>
+              <div class="dropdown-item fw-medium py-0">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                  <label class="form-check-label pt-1-5" for="flexCheckChecked">
+                    Pending
+                  </label>
+                </div>
+              </div>
+              <div class="dropdown-item fw-medium py-0">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                  <label class="form-check-label pt-1-5" for="flexCheckChecked">
+                    Paid
+                  </label>
+                </div>
+              </div>
             </div>
+          </div>
           </div>
 
 
@@ -194,7 +214,7 @@
             <div class="container p-0">
               <div class="row small-12 align-items-center">
                 <div class="col-md-2 fw-mediumer">
-                  #{{ invoice.id }}
+                  #<span class="text-dark fw-medium">{{ invoice.id }}</span>
                 </div>
                 <div class="col-md-3 fw-mediumer">
                   Due {{ convertDate(invoice.paymentDue) }}
@@ -374,7 +394,7 @@ a {
 }
 
 .dropdown-menu {
-  width: 250px;
+  width: 52px;
   padding: 0px;
   padding-top: 6px;
   padding-bottom: 4px;
@@ -386,15 +406,19 @@ a {
 }
 
 .dropdown-item {
-  padding-right: 22px;
+  /* padding-right: 22px;
   padding-left: 22px;
   padding-top: 6px;
-  padding-bottom: 6px;
+  padding-bottom: 6px; */
 }
 
 .dropdown-item:focus, .dropdown-item:hover {
     color: #AD1FEA!important;
     background-color: transparent !important;
+}
+
+.pt-1-5 {
+  padding-top: 0.15rem;
 }
 
 </style>
