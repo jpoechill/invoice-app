@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="container mt-5">
+    <div class="container pt-5">
       <div class="row"> 
         <div class="offset-md-2 col-md-3">
-          <span class="d-block small-32 fw-medium">Invoices</span>
-          <span class="small-12 text-light">
+          <span class="d-block small-32 fw-medium" :class="[lightMode ? 'text-dark' : 'text-white']">Invoices</span>
+          <span class="small-12" :class="[lightMode ? 'text-light' : 'text-light-purple']">
             There are {{ store.invoices.length }} total invoices
           </span>
           <br>
@@ -13,7 +13,7 @@
           
           <div class="btn-group">
             <div class="dropdown d-inline">
-              <button class="d-inline bg-transparent fw-medium border-0 small-12 ps-3 me-4" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button class="d-inline bg-transparent fw-medium border-0 small-12 ps-3 me-4"  :class="[lightMode ? 'text-dark' : 'text-white']" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Filter by status <img src="/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
               </button>
               <div class="dropdown-menu small-12 p-2 pt-3 pb-2 mt-3" aria-labelledby="dropdownMenuButton">
@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div class="container mt-5 mb-4">
+    <div class="container mt-5 pb-4">
       <div class="row">
         <div v-if="filteredInvoices.length === 0" class="container">
           <div class="row">
@@ -74,12 +74,12 @@
             </div>
           </div>
         </div>
-        <div v-for="(invoice, index) in filteredInvoices" :key="index" @click="this.$router.push({path: '/invoice/' + invoice.id})" class="offset-md-2 col-md-8 bg-white text-light rounded px-4 py-3 mb-3 shadow hover" role="button">
+        <div v-for="(invoice, index) in filteredInvoices" :key="index" @click="this.$router.push({path: '/invoice/' + invoice.id})" class="offset-md-2 col-md-8 text-light rounded px-4 py-3 mb-3 shadow hover"  :class="[lightMode ? 'bg-white' : 'bg-dark-purple']" role="button">
           <!-- <nuxt-link :to="'/invoice/' + invoice.id"> -->
             <div class="container p-0">
               <div class="row small-12 align-items-center">
                 <div class="col-md-2 fw-mediumer">
-                  #<span class="text-dark fw-bold">{{ invoice.id }}</span>
+                  #<span class="fw-bold" :class="[lightMode ? 'text-dark' : 'text-white']">{{ invoice.id }}</span>
                 </div>
                 <div class="col-md-2-5 p-0 fw-mediumer">
                   Due {{ convertDate(invoice.paymentDue) }}
@@ -87,7 +87,7 @@
                 <div class="col-md-2-5 fw-mediumer">
                   {{ invoice.clientName }}
                 </div>
-                <div class="col-md-2 small-15 p-0 text-dark text-end fw-bold">
+                <div class="col-md-2 small-15 p-0 text-end fw-bold" :class="[lightMode ? 'text-dark' : 'text-white']">
                   £ {{ formatTotal(invoice.total) }}
                 </div>
                 <div class="col-md-3 text-end float-end py-0">
@@ -125,8 +125,22 @@
 import { defineComponent } from '@vue/composition-api'
 import { useStore } from '~/stores/store'
 
-export default {
-  name: 'AppHeader',
+export default defineComponent({
+  setup() {
+    const store = useStore()
+
+    return { store }
+  },
+  computed: {
+    lightMode() {
+      return this.store.lightMode
+    },
+    filteredInvoices: function () {
+      return this.allInvoices.filter(x => {
+        return this.filters.includes(x.status)
+      }) 
+    }
+  },
   data() {
     return {
       // filteredInvoices: [],
@@ -140,13 +154,6 @@ export default {
       this.store = useStore()
     } catch (error) {
       console.log(error);
-    }
-  },
-  computed: {
-    filteredInvoices: function () {
-      return this.allInvoices.filter(x => {
-        return this.filters.includes(x.status)
-      }) 
     }
   },
   methods: {
@@ -184,14 +191,14 @@ export default {
       return Number(date[2]) + ' ' + months[Number(date[1])] + ' ' + date[0]
     }
   }
-}
+})
 </script>
 
 
 <style>
 body, html {
   font-family: 'Spartan';
-  background-color: #f8f9fa; 
+  /* background-color: #f8f9fa;  */
 }
 
 a {
@@ -249,12 +256,20 @@ a {
   height: 40px;
 }
 
+/* .text-dark {
+  color: #111111!important;
+} */
+
 .text-orange {
   color: #FF8F00;
 }
 
 .text-purple {
   color: #7C5DFA;
+}
+
+.text-light-light-purple {
+  color: #DFE3FA;
 }
 
 .text-light-purple {
@@ -353,6 +368,64 @@ a {
 
 .pt-1-5 {
   padding-top: 0.15rem;
+}
+
+.bg-dark-blue {
+  background-color: #373B53;
+}
+
+.bg-dark {
+  background-color: #141625!important;
+}
+
+.bg-dark-purple {
+  background-color: #1E2139;
+}
+
+.bg-light {
+  background-color: #F9FAFE!important;
+}
+
+.bg-light-light {
+  background-color: #F8F8FB!important;
+}
+
+.bg-purple {
+  background-color: #7C5DFA;
+}
+
+.bg-light-purple {
+  background-color: #9277FF!important;
+}
+
+.bg-light-light-purple {
+  background-color: #252945!important;
+}
+
+.bg-red {
+  background-color: #EC5757;
+}
+
+.btn-round {
+  border-radius: 1000px;
+}
+
+.text-light {
+  color: #858BB2!important;
+}
+
+.rounded-top {
+  border-top-left-radius: 8px!important;
+  border-top-right-radius: 8px!important;
+}
+
+.rounded-bottom {
+  border-bottom-right-radius: 8px!important;
+  border-bottom-left-radius: 8px!important;
+}
+
+.line-height {
+  line-height: 20px;
 }
 
 </style>

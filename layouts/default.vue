@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{ lightMode }} asda
     <!-- New Invoice Modal -->
     <div class="offcanvas offcanvas-start" style="padding-left: 90px; width: 750px;" tabindex="-1" id="offcanvasNewInvoice" aria-labelledby="offcanvasNewInvoiceLabel">
       <div class="container bg-white p-5 offcanvas-body">
@@ -142,11 +143,13 @@
     <!-- Main Invoice-List Body -->
     <div class="fixed-top h-100 bg-dark-blue text-white d-flex flex-column align-items-start rounded-bottom-right rounded-top-right " style="width: 90px; z-index: 9999;">
       <div class="mb-auto position-relative bg-purple d-flex align-items-center overflow-hidden w-100 vertical-align-middle rounded-top-right rounded-bottom-right" style="height: 90px; width: 90px;">
-        <img src="/logo.svg" class="mx-auto" alt="Logo" style="z-index: 9999;">
+        <nuxt-link to="/" class="mx-auto" style="z-index: 9999;">
+          <img src="/logo.svg" alt="Logo">
+        </nuxt-link>
         <div class="position-absolute top-50 w-100 rounded-top-left bg-light-purple h-100"></div>
       </div>
       <div class="w-100 mx-auto text-center py-3">
-        <img @click="alert('Toggle light/dark mode.')" src="/icon-moon.svg" alt="Toggle Light/Dark Mode" role="button">
+        <img @click="toggleLightMode()" :src="lightMode ? '/icon-moon.svg' : '/icon-sun.svg'" alt="Toggle Light/Dark Mode" role="button">
         <hr class="">
         <img src="/image-avatar.jpg" class="rounded-full" alt="Image Avatar">
       </div>
@@ -158,14 +161,44 @@
 
 <script>
 import { defineComponent } from '@vue/composition-api'
+import { useStore } from '~/stores/store'
 
 export default defineComponent({
   setup() {
-    
+    const store = useStore()
+    return { store }
+  },
+  computed: {
+    lightMode() {
+      return this.store.lightMode
+    },
+  },
+  mounted() {
+    document.body.classList.add("bg-light-light")
+  },
+  data: function () {
+    return {}
   },
   methods: {
     alert: function (msg) {
       alert(msg)
+    },
+    toggleLightMode: function () {
+      useStore().toggleLightMode()
+      // this.lightMode = useStore().lightMode
+      // console.log('from store: ' + useStore().lightMode)
+    }
+  },
+  watch: {
+  // whenever active changes, this function will run
+    lightMode: function () {
+      if (this.lightMode) {
+        document.body.classList.remove('bg-dark')
+        document.body.classList.add('bg-light-light')
+      } else {
+        document.body.classList.add('bg-dark')
+        document.body.classList.remove('bg-light-light')
+      }
     }
   }
 })

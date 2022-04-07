@@ -5,10 +5,16 @@ export const useStore = defineStore('storeId', {
   // arrow function recommended for full type inference
   state: () => {
     return {
-      ...data
+      ...data,
+      lightMode: true,
+      oogabooga: 'cat and the hat'
     }
   },
   actions:{
+    toggleLightMode() {
+      console.log(this.lightMode)
+      this.lightMode = !this.lightMode
+    },
     deleteInvoice(id){
       this.invoices = this.invoices.filter(x => x.id !== id)
     },
@@ -31,6 +37,7 @@ export const useStore = defineStore('storeId', {
       })
     },
     updateInvoice(id, payload){
+      console.log('ooga booga')
       this.invoices = this.invoices.map(x => {
         if (x.id === id) {
           x = payload
@@ -43,9 +50,11 @@ export const useStore = defineStore('storeId', {
 
   getters:{
     // getCount:(state)=>state.counter,
-    // getUser: (state)=> {
-    //   state.name
-    // }
+    getLightMode: (state)=> {
+      console.log('123')
+      console.log(state.lightMode)
+      state.lightMode
+    }
   }
 })
 
