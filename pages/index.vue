@@ -7,42 +7,42 @@
           <span class="small-12 text-light">
             There are {{ store.invoices.length }} total invoices
           </span>
+          <br>
         </div>
         <div class="col-md-5 ps-0 text-end">
-
+          
           <div class="btn-group">
-
-         <div class="dropdown d-inline">
-            <button class="d-inline bg-transparent fw-medium border-0 small-12 ps-3 me-4" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Filter by status <img src="/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
-            </button>
-            <div class="dropdown-menu small-12 p-2 pt-3 pb-2 mt-3" aria-labelledby="dropdownMenuButton">
-              <div class="dropdown-item fw-medium py-0">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="sortDraftsCheckbox">
-                  <label class="form-check-label pt-1-5" role="button" for="sortDraftsCheckbox">
-                    Draft
-                  </label>
+            <div class="dropdown d-inline">
+              <button class="d-inline bg-transparent fw-medium border-0 small-12 ps-3 me-4" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Filter by status <img src="/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
+              </button>
+              <div class="dropdown-menu small-12 p-2 pt-3 pb-2 mt-3" aria-labelledby="dropdownMenuButton">
+                <div class="dropdown-item fw-medium py-0">
+                  <div class="d-block form-check">
+                    <input @click="toggleFilters('draft')" class="form-check-input" type="checkbox" value="" checked id="sortDraftsCheckbox">
+                    <label class="form-check-label pt-1-5" role="button" for="sortDraftsCheckbox">
+                      Draft
+                    </label>
+                  </div>
                 </div>
-              </div>
-              <div class="dropdown-item fw-medium py-0">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="sortPendingCheckbox">
-                  <label class="form-check-label pt-1-5" role="button" for="sortPendingCheckbox">
-                    Pending
-                  </label>
+                <div class="dropdown-item fw-medium py-0">
+                  <div class="d-block form-check">
+                    <input @click="toggleFilters('pending')" class="form-check-input" type="checkbox" value="" checked id="sortPendingCheckbox">
+                    <label class="form-check-label pt-1-5" role="button" for="sortPendingCheckbox">
+                      Pending
+                    </label>
+                  </div>
                 </div>
-              </div>
-              <div class="dropdown-item fw-medium py-0">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="sortPaidCheckbox">
-                  <label class="form-check-label pt-1-5" role="button" for="sortPaidCheckbox">
-                    Paid
-                  </label>
+                <div class="dropdown-item fw-bold py-0">
+                  <div class="d-block form-check">
+                    <input @click="toggleFilters('paid')" class="form-check-input" type="checkbox" value="" checked id="sortPaidCheckbox">
+                    <label class="form-check-label pt-1-5" role="button" for="sortPaidCheckbox">
+                      Paid
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
           </div>
 
 
@@ -60,33 +60,60 @@
 
     <div class="container mt-5 mb-4">
       <div class="row">
-        <div v-for="(invoice, index) in store.invoices" :key="index" class="offset-md-2 col-md-8 bg-white text-light rounded px-4 py-3 mb-3 shadow">
-          <nuxt-link :to="'/invoice/' + invoice.id">
-            <div class="container p-0">
+        <div v-if="filteredInvoices.length === 0" class="container">
+          <div class="row">
+            <div class="offset-md-2 col-md-8 text-center">
+              <img src="/illustration-empty.svg" alt="">
+              <p class="mt-5 fw-bold">
+                There is nothing here
+              </p>
+              <p class="small-11 text-light">
+                Create an invoice by clicking the <br>
+                <span class="fw-bold">New Invoice</span> button and get started
+              </p>
+            </div>
+          </div>
+        </div>
+        <div v-for="(invoice, index) in filteredInvoices" :key="index" class="offset-md-2 col-md-8 bg-white text-light rounded px-4 py-3 mb-3 shadow hover">
+          <!-- <nuxt-link :to="'/invoice/' + invoice.id"> -->
+            <div @click="this.$router.push({path: '/invoice/' + invoice.id}) " class="container p-0" role="button">
               <div class="row small-12 align-items-center">
                 <div class="col-md-2 fw-mediumer">
-                  #<span class="text-dark fw-medium">{{ invoice.id }}</span>
+                  #<span class="text-dark fw-bold">{{ invoice.id }}</span>
                 </div>
-                <div class="col-md-3 fw-mediumer">
+                <div class="col-md-2-5 p-0 fw-mediumer">
                   Due {{ convertDate(invoice.paymentDue) }}
                 </div>
                 <div class="col-md-2-5 fw-mediumer">
                   {{ invoice.clientName }}
                 </div>
-                <div class="col-md-2 small-15 p-0 text-dark fw-medium">
-                  £ {{ invoice.total }}
+                <div class="col-md-2 small-15 p-0 text-dark text-end fw-bold">
+                  £ {{ formatTotal(invoice.total) }}
                 </div>
-                <div class="col-md-2-5 text-end float-end py-0">
+                <div class="col-md-3 text-end float-end py-0">
                   <div v-if="invoice.status === 'pending'" class="d-inline-block w-104 text-orange bg-orange small-12 fw-medium p-3 ms-3 text-center rounded">
-                    • {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
+                    <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="4" cy="4" r="4" fill="#FF8F00"/>
+                    </svg>
+                    {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
                   </div>
-                  <div v-else class="d-inline-block w-104 text-green bg-green small-12 fw-medium p-3 ms-3 text-center rounded">
-                    • {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
+                  <div v-else-if="invoice.status === 'paid'" class="d-inline-block w-104 text-green bg-green small-12 fw-medium p-3 ms-3 text-center rounded">
+                    <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="4" cy="4" r="4" fill="#33D69F"/>
+                    </svg>
+                    {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
                   </div>
+                  <div v-else class="d-inline-block w-104 text-dark bg-grey small-12 fw-medium p-3 ms-3 text-center rounded">
+                    <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="4" cy="4" r="4" fill="#111"/>
+                    </svg>
+                    {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
+                  </div>
+                  <img src="/icon-arrow-right.svg" class="ms-3 d-inline" alt="Right Chevron Arrow">
                 </div>
               </div>
             </div>
-          </nuxt-link>
+          <!-- </nuxt-link> -->
 
         </div>
       </div>
@@ -102,7 +129,9 @@ export default {
   name: 'AppHeader',
   data() {
     return {
-      filteredInvoices: [],
+      // filteredInvoices: [],
+      filters: ['draft', 'pending', 'paid'],
+      allInvoices: useStore().invoices,
       store: null,
     }
   },
@@ -113,7 +142,38 @@ export default {
       console.log(error);
     }
   },
+  computed: {
+    filteredInvoices: function () {
+      return this.allInvoices.filter(x => {
+        return this.filters.includes(x.status)
+      }) 
+    }
+  },
   methods: {
+    toggleFilters: function (filterItem) {
+      let index = this.filters.indexOf(filterItem)
+
+      console.log('click: ' + filterItem)
+
+      if (index >= 0) {
+        this.filters.splice(index, 1)
+      } else {
+        this.filters.push(filterItem)
+      }
+    },
+    formatTotal: function (n) {
+      let val = Math.round(Number(n) * 100) / 100;
+      let parts = val.toString().split(".");
+      let num = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + (parts[1] ? "." + parts[1] : "");
+
+      if (!num.split('').includes('.')) {
+        num = num + '.00'
+      } else if (num.split('.')[1].length === 1) {
+        num = num + '0'
+      }
+
+      return num
+    },
     alert: function (msg) {
       alert(msg)
     },
@@ -145,6 +205,10 @@ a {
 
 .fw-mediumer {
   font-weight: 500;
+}
+
+.fw-bold {
+  font-weight: 700!important;
 }
 
 .small-11 {
@@ -201,6 +265,10 @@ a {
   background-color: rgba(255,143,0,.05)
 }
 
+.bg-grey {
+  background-color: rgba(55,59,83,.05)
+}
+
 .text-green {
   color: #33D69F;
 }
@@ -247,6 +315,10 @@ a {
   width: 20.83333%;
 }
 
+.hover:hover {
+  outline: 1px solid #7C5DFA;
+}
+
 .btn-dropdown, .btn-dropdown:hover {
   color: white;
 }
@@ -275,7 +347,7 @@ a {
 }
 
 .dropdown-item:focus, .dropdown-item:hover {
-    color: #AD1FEA!important;
+    color: #888EB0!important;
     background-color: transparent !important;
 }
 

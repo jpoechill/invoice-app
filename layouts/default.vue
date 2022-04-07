@@ -146,7 +146,7 @@
         <div class="position-absolute top-50 w-100 rounded-top-left bg-light-purple h-100"></div>
       </div>
       <div class="w-100 mx-auto text-center py-3">
-        <img @click="alert('Toggle light/dark mode.')" src="/icon-moon.svg" alt="Toggle Light/Dark Mode">
+        <img @click="alert('Toggle light/dark mode.')" src="/icon-moon.svg" alt="Toggle Light/Dark Mode" role="button">
         <hr class="">
         <img src="/image-avatar.jpg" class="rounded-full" alt="Image Avatar">
       </div>
@@ -155,6 +155,22 @@
     <slot />
   </div>
 </template>
+
+<script>
+import { defineComponent } from '@vue/composition-api'
+
+export default defineComponent({
+  setup() {
+    
+  },
+  methods: {
+    alert: function (msg) {
+      alert(msg)
+    }
+  }
+})
+</script>
+
 
 <style>
 </style>

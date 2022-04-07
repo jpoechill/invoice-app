@@ -10,7 +10,7 @@ export default defineNuxtConfig({
         lang: 'en',
         link: [
             { rel: "stylesheet", href: "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" },
-            { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Spartan:wght@300;400;500;600;900&display=swap" }
+            { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Spartan:wght@300;400;500;600;700;900&display=swap" }
         ],
         script: [
             { src: 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js' },

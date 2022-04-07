@@ -145,11 +145,11 @@
             <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
           </div>
           <div class="modal-body text-light small-12">
-            Are you sure you want to delete invoice #XM9141? This action cannot be undone.
+            Are you sure you want to delete invoice #{{ invoice.id }}? This action cannot be undone.
           </div>
           <div class="modal-footer border-0">
             <button class="btn bg-light text-light text-dark btn-round small-12 p-3 px-4 fw-medium me-2" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button"  data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn bg-red text-white btn-round small-12 p-3 px-4 fw-medium me-2">Delete</button>
+            <button @click="deleteInvoice(invoice.id)" type="button" class="btn bg-red text-white btn-round small-12 p-3 px-4 fw-medium me-2" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
           </div>
         </div>
       </div>
@@ -186,8 +186,23 @@
         <div class="offset-md-2 col-md-8 bg-white mt-4 p-4 d-flex align-items-center justify-content-between rounded shadow">
           <div class="d-inline small-12 text-light">
             Status
-            <div class="d-inline text-orange bg-orange small-12 fw-medium p-2 p-3 ms-3 rounded">
-              • Pending
+            <div v-if="invoice.status === 'pending'" class="d-inline-block w-104 text-orange bg-orange small-12 fw-medium p-3 ms-3 text-center rounded">
+              <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="4" cy="4" r="4" fill="#FF8F00"/>
+              </svg>
+              {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
+            </div>
+            <div v-else-if="invoice.status === 'paid'" class="d-inline-block w-104 text-green bg-green small-12 fw-medium p-3 ms-3 text-center rounded">
+              <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="4" cy="4" r="4" fill="#33D69F"/>
+              </svg>
+              {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
+            </div>
+            <div v-else class="d-inline-block w-104 text-dark bg-grey small-12 fw-medium p-3 ms-3 text-center rounded">
+              <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="4" cy="4" r="4" fill="#111"/>
+              </svg>
+              {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
             </div>
           </div>
           <div class="d-inline float-end">
@@ -197,8 +212,11 @@
             <button data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn bg-red text-white btn-round small-12 p-3 px-4 fw-medium me-2">
               Delete
             </button>
-            <button @click="alert('Mark invoice as Paid')" class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium">
+            <button v-if="invoice.status === 'pending'" @click="markInvoicePaid()" class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium">
               Mark as Paid
+            </button>
+            <button v-if="invoice.status === 'draft'" @click="markInvoicePending()" class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium">
+              Mark as Pending
             </button>
           </div>
         </div>
@@ -359,20 +377,37 @@ export default defineComponent({
     try {
       let id = this.$route.params.id
 
-      this.invoice = useStore().invoices.find(x => x.id === id)
-
       window.scrollTo(0, 0)
+      this.fetchInvoice()
 
       if (!this.invoice || !id) {
-        console.log('no go')
+        console.log('oh no')
       }
     } catch (error) {
       console.log(error);
     }
   },
   methods: {
+    fetchInvoice: function () {
+      let id = this.$route.params.id
+
+      this.invoice = useStore().invoices.find(x => x.id === id)
+    },
     alert: function (msg) {
       alert(msg)
+    },
+    deleteInvoice: function (id) {
+      useStore().deleteInvoice(id)
+
+      this.$router.push('/')
+    },
+    markInvoicePaid: function () {
+      useStore().markInvoicePaid(this.invoice.id)
+      this.fetchInvoice()
+    },
+    markInvoicePending: function () {
+      useStore().markInvoicePending(this.invoice.id)
+      this.fetchInvoice()
     },
     addNewInvoiceItem: function () {
       this.invoice.items.push(

@@ -5,14 +5,40 @@ export const useStore = defineStore('storeId', {
   // arrow function recommended for full type inference
   state: () => {
     return {
-      // all these properties will have their type inferred automatically
       ...data
     }
   },
   actions:{
-     hit(){
-       this.counter++;
-     }
+    deleteInvoice(id){
+      this.invoices = this.invoices.filter(x => x.id !== id)
+    },
+    markInvoicePaid(id){
+      this.invoices = this.invoices.map(x => {
+        if (x.id === id) {
+          x.status = 'paid'
+        }
+
+        return x
+      })
+    },
+    markInvoicePending(id){
+      this.invoices = this.invoices.map(x => {
+        if (x.id === id) {
+          x.status = 'pending'
+        }
+
+        return x
+      })
+    },
+    updateInvoice(id, payload){
+      this.invoices = this.invoices.map(x => {
+        if (x.id === id) {
+          x = payload
+        }
+
+        return x
+      })
+    }
   },
 
   getters:{
