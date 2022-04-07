@@ -74,9 +74,9 @@
             </div>
           </div>
         </div>
-        <div v-for="(invoice, index) in filteredInvoices" :key="index" class="offset-md-2 col-md-8 bg-white text-light rounded px-4 py-3 mb-3 shadow hover">
+        <div v-for="(invoice, index) in filteredInvoices" :key="index" @click="this.$router.push({path: '/invoice/' + invoice.id})" class="offset-md-2 col-md-8 bg-white text-light rounded px-4 py-3 mb-3 shadow hover" role="button">
           <!-- <nuxt-link :to="'/invoice/' + invoice.id"> -->
-            <div @click="this.$router.push({path: '/invoice/' + invoice.id}) " class="container p-0" role="button">
+            <div class="container p-0">
               <div class="row small-12 align-items-center">
                 <div class="col-md-2 fw-mediumer">
                   #<span class="text-dark fw-bold">{{ invoice.id }}</span>
