@@ -1,5 +1,25 @@
 <template>
   <div>
+    <!-- Mobile Fixed Nav -->
+    <div class="container fixed-bottom bg-white py-0 px-4 d-lg-none">
+      <div class="d-inline py-0 row">
+        <div class="col-12 py-0 d-flex justify-content-between">
+          <button class="btn bg-light text-light text-dark btn-round small-15 p-3 px-4 fw-medium me-2" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+            Edit
+          </button>
+          <button data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn bg-red text-white btn-round small-15 p-3 px-4 fw-medium me-2">
+            Delete
+          </button>
+          <button v-if="invoice.status === 'pending'" @click="markInvoicePaid()" class="btn bg-purple text-white btn-round small-15 p-3 px-4 fw-medium">
+            Mark as Paid
+          </button>
+          <button v-if="invoice.status === 'draft'" @click="markInvoicePending()" class="btn bg-purple text-white btn-round small-15 p-3 px-4 fw-medium">
+            Mark as Pending
+          </button>
+        </div>
+      </div>
+    </div>
+    
     <!-- Edit Modal -->
     <div class="offcanvas offcanvas-start" :class="[lightMode ? 'bg-white' : 'bg-dark']" style="padding-left: 90px; width: 750px;" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
       <div class="container p-5 offcanvas-body">
@@ -194,17 +214,19 @@
       </div>
     </div>
 
-    <div class="container pt-5 pb-4 small-11">
-      <div class="row"> 
-        <div class="offset-md-2 col-md-8 fw-medium">
+    <div class="container pt-5 pb-4 px-3 px-md-0 small-11">
+      <div class="row px-4 px-md-0 pt-5 mt-3 pt-lg-4 mt-lg-0 pb-5 mb-3 mb-lg-0 pb-lg-0"> 
+        <div class="offset-lg-2 col-lg-8 col-12 fw-medium">
           <nuxt-link to="/" :class="[lightMode ? 'text-dark' : 'text-white']">
             <img src="/icon-arrow-left.svg" alt="Go Back Arrow" class="me-3">
             Go back
           </nuxt-link>
            <!-- {{ invoice }} -->
         </div>
-        <div class="offset-md-2 col-md-8 mt-4 p-4 d-flex align-items-center justify-content-between rounded shadow"  :class="[lightMode ? 'bg-white' : 'bg-dark-purple']" >
-          <div class="d-inline small-12 text-light">
+        <div class="offset-lg-2 col-lg-8 col-12 mt-4 p-4 d-flex align-items-center justify-content-between rounded shadow"  :class="[lightMode ? 'bg-white' : 'bg-dark-purple']" >
+          
+          <!--  Mobile Layout -->
+          <div class="d-inline-flex justify-content-between align-items-center w-100 small-12 text-light px-3 d-lg-none">
             Status
             <div v-if="invoice.status === 'pending'" class="d-inline-block w-104 text-orange bg-orange small-12 fw-medium p-3 ms-3 text-center rounded">
               <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -225,7 +247,30 @@
               {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
             </div>
           </div>
-          <div class="d-inline float-end">
+
+          <!-- Desktop Layout -->
+          <div class="d-inline small-12 text-light d-none d-lg-block">
+            Status
+            <div v-if="invoice.status === 'pending'" class="d-inline-block w-104 text-orange bg-orange small-12 fw-medium p-3 ms-3 text-center rounded">
+              <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="4" cy="4" r="4" fill="#FF8F00"/>
+              </svg>
+              {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
+            </div>
+            <div v-else-if="invoice.status === 'paid'" class="d-inline-block w-104 text-green bg-green small-12 fw-medium p-3 ms-3 text-center rounded">
+              <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="4" cy="4" r="4" fill="#33D69F"/>
+              </svg>
+              {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
+            </div>
+            <div v-else class="d-inline-block w-104 text-dark bg-grey small-12 fw-medium p-3 ms-3 text-center rounded">
+              <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="4" cy="4" r="4" fill="#111"/>
+              </svg>
+              {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
+            </div>
+          </div>
+          <div class="d-inline float-end d-none d-lg-block">
             <button class="btn bg-light text-light text-dark btn-round small-12 p-3 px-4 fw-medium me-2" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
               Edit
             </button>
@@ -241,9 +286,59 @@
           </div>
         </div>
 
-        <div class="offset-md-2 col-md-8 mt-3 p-3 py-5 mb-5 rounded shadow" :class="[lightMode ? 'bg-white text-light' : 'bg-dark-purple text-light-light-purple']">
-          
-          <div class="container">
+        <div class="offset-lg-2 col-lg-8 col-12 mt-3 p-3 py-5 mb-5 rounded shadow" :class="[lightMode ? 'bg-white text-light' : 'bg-dark-purple text-light-light-purple']">
+          <!-- Mobile Layout -->
+          <div class="container d-lg-none">
+            <div class="row">
+              <div class="col small-15">
+                <span class="fw-medium mb-2">#</span> 
+                <span class="fw-medium mb-2" :class="[lightMode ? 'text-dark' : 'text-white']">
+                  {{ invoice.id }}
+                </span><br>
+                {{ invoice.description }}
+              </div>
+              <div class="col-12 pt-4  small-12 line-height">
+                {{ invoice.senderAddress.street }} <br>
+                {{ invoice.senderAddress.city }}  <br>
+                {{ invoice.senderAddress.postCode }}  <br>
+                {{ invoice.senderAddress.country }} 
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col small-12">
+                Invoice Date <br>
+                <span class="d-block fw-medium mt-2 mb-3 small-15" :class="[lightMode ? 'text-dark' : 'text-white']">
+                  {{ convertDate(invoice.createdAt) }}
+                </span> <br>
+
+                Payment Due <br>
+                <span class="d-block fw-medium mt-2 small-15" :class="[lightMode ? 'text-dark' : 'text-white']">
+                  {{ convertDate(invoice.paymentDue) }}
+                </span>
+              </div>
+              <div class="col">
+                Bill To <br>
+                <span class="d-block fw-medium mt-2 small-15" :class="[lightMode ? 'text-dark' : 'text-white']"> 
+                  {{ invoice.clientName }}
+                </span> 
+                <span class="d-block mt-2 line-height">
+                  {{ invoice.clientAddress.street }} <br>
+                  {{ invoice.clientAddress.city }}  <br>
+                  {{ invoice.clientAddress.postCode }}  <br>
+                  {{ invoice.clientAddress.country }} 
+                </span>
+              </div>
+              <div class="col-12 pt-4 small-12">
+                Sent To <br>
+                <span class="d-block fw-medium mt-2 small-15" :class="[lightMode ? 'text-dark' : 'text-white']"> 
+                  {{ invoice.clientEmail }}
+                </span> 
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop Layout -->
+          <div class="container d-none d-lg-block">
             <div class="row">
               <div class="col-md-6">
                 <span class="fw-medium mb-2 small-15">#</span> 
@@ -293,7 +388,26 @@
           </div>
 
           <div class="mx-4 rounded-top" :class="[lightMode ? 'bg-light' : 'bg-light-light-purple']">
-            <div class="container py-4 px-4 mt-5">
+            
+            <!-- Mobile List -->
+            <div class="container pt-4 pb-3 px-4 mt-5 d-lg-none">
+              <div v-for="(item, index) in invoice.items" :key="index" class="w-100 small-12 pb-4 mt-3">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="fw-bold small-15" :class="[lightMode ? 'text-dark' : 'text-white']">
+                    {{ item.name }}
+                    <div class="pt-2 fw-medium text-light">
+                    {{ item.quantity }} x {{ '£ ' + formatTotal(item.price) }}
+                    </div>
+                  </div>
+                  <div class="float-end fw-bold small-15 text-end" :class="[lightMode ? 'text-dark' : 'text-white']">
+                    {{ '£ ' + formatTotal(item.total) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Desktop List -->
+            <div class="container py-4 px-4 mt-5 d-none d-lg-block">
               <div class="row">
                 <div class="col-md-6">
                   Item Name
@@ -316,32 +430,34 @@
                 <div class="col-md-2">
                   {{ item.quantity }}
                 </div>
-                <div class="col-md-2 fw-medium text-end">
+                <div class="col-md-2 fw-medium text-end ps-0">
                   {{ '£ ' + formatTotal(item.price) }}
                 </div>
-                <div class="col-md-2 fw-medium text-end" :class="[lightMode ? 'text-dark' : 'text-white']">
+                <div class="col-md-2 fw-medium text-end ps-0" :class="[lightMode ? 'text-dark' : 'text-white']">
                   {{ '£ ' + formatTotal(item.total) }}
                 </div>
               </div>
-
             </div>
           </div>
 
           <div class="text-white mx-4 rounded-bottom" :class="[lightMode ? 'bg-dark-blue' : 'bg-dark']">
-            <div class="container py-4 px-4">
-              <div class="row">
-                <div class="col-md-6">
-                  Amount Due
+            <div class="d-md-none">
+              <div class="px-4 py-5 d-flex justify-content-between align-items-center">
+                <div class="small-15">Grand Total</div>  
+                <div class="small-24 fw-bold float-end">
+                {{ '£ ' + formatTotal(invoice.total) }}
                 </div>
-                <div class="col-md-6 text-end">
-                  <span class="small-24 fw-medium mb-0">
-                  {{ '£ ' + formatTotal(invoice.total) }}
-                  </span>
+              </div>
+            </div>
+            <div class="d-none d-md-block">
+              <div class="px-4 py-4 d-flex justify-content-between align-items-center">
+                <div class="small-12">Amount Due</div>  
+                <div class="small-24 fw-bold float-end">
+                {{ '£ ' + formatTotal(invoice.total) }}
                 </div>
               </div>
             </div>
           </div>
-          
 
         </div>
       </div>

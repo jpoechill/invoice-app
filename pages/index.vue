@@ -9,9 +9,9 @@
           </span>
           <br>
         </div>
-        <div class="w-50 d-flex align-items-center justify-content-end">
+        <div class="w-50 d-flex align-items-center justify-content-end ps-0">
           <div class="float-end">
-            <div class="btn-group pt-2 ps-2">
+            <div class="btn-group pt-2 ps-0">
               <div class="dropdown d-inline">
                 <button class="d-inline bg-transparent fw-medium border-0 small-12 ps-3 me-3"  :class="[lightMode ? 'text-dark' : 'text-white']" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Filter<img src="/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
@@ -73,12 +73,12 @@
               </div>
             </div>
 
-            <div v-for="(invoice, index) in filteredInvoices" :key="index" @click="this.$router.push({path: '/invoice/' + invoice.id})" class="text-light rounded px-4 py-3 mb-3 shadow hover" :class="[lightMode ? 'bg-white' : 'bg-dark-purple']" role="button">
+            <button v-for="(invoice, index) in filteredInvoices" :key="index" @click="this.$router.push({path: '/invoice/' + invoice.id})" class="border-0 text-light rounded px-4 py-3 mb-3 shadow hover" :class="[lightMode ? 'bg-white' : 'bg-dark-purple']" aria-label="asdas" role="button">
 
               <div class="container p-0">
                 <div class="row small-12 align-items-center py-2">
                   <div class="d-flex w-100 justify-content-between fw-mediumer">
-                    <div>
+                    <div class="small-16">
                       #<span class="fw-bold" :class="[lightMode ? 'text-dark' : 'text-white']">{{ invoice.id }}</span>
                     </div>
                     <div class="small-15">{{ invoice.clientName }}</div>
@@ -113,7 +113,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </button>
           </div>
         </div>
 
@@ -175,7 +175,7 @@
       </div>
     </div>
 
-    <div class="container d-none d-md-block mt-5 pb-5">
+    <div class="container d-none d-lg-block mt-5 pb-5">
       <div class="row">
         <div v-if="filteredInvoices.length === 0" class="container">
           <div class="row">
@@ -462,7 +462,7 @@ a {
   width: 20.83333%;
 }
 
-.hover:hover {
+.hover:hover, .hover:focus-visible {
   outline: 1px solid #7C5DFA;
 }
 

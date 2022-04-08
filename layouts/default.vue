@@ -187,7 +187,9 @@
         <div class="position-absolute top-50 w-100 rounded-top-left bg-light-purple" style="min-height: 100%;"></div>
       </div>
       <div class=" d-inline-flex align-items-center">
-        <img @click="toggleLightMode()" class="pe-4" :src="lightMode ? '/icon-moon.svg' : '/icon-sun.svg'" alt="Toggle Light/Dark Mode" role="button">
+        <button @click="toggleLightMode()" class="btn p-0 me-3" role="button">
+          <img :src="lightMode ? '/icon-moon.svg' : '/icon-sun.svg'" alt="Toggle Light/Dark Mode" role="button">
+        </button>
         <div class="ms-3 h-100 border-start d-inline-flex align-items-center p-4">
           <img src="/image-avatar.jpg" class="rounded-full" alt="Image Avatar">
         </div>
