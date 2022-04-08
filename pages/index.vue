@@ -1,7 +1,127 @@
 <template>
   <div>
-    <div class="container pt-5">
-      <div class="row"> 
+    <div class="container d-lg-none pt-5">
+      <div class="d-flex align-items-middle row pt-5 pt-lg-0"> 
+        <div class="w-50 ps-4">
+          <span class="d-block small-32 ps-1 fw-medium" :class="[lightMode ? 'text-dark' : 'text-white']">Invoices</span>
+          <span class="small-12 ps-2" :class="[lightMode ? 'text-light' : 'text-light-purple']">
+            {{ store.invoices.length }} invoices
+          </span>
+          <br>
+        </div>
+        <div class="w-50 d-flex align-items-center justify-content-end">
+          <div class="float-end">
+            <div class="btn-group pt-2 ps-2">
+              <div class="dropdown d-inline">
+                <button class="d-inline bg-transparent fw-medium border-0 small-12 ps-3 me-3"  :class="[lightMode ? 'text-dark' : 'text-white']" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Filter<img src="/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
+                </button>
+                <div class="dropdown-menu small-12 p-2 pt-3 pb-2 mt-3" aria-labelledby="dropdownMenuButton">
+                  <div class="dropdown-item fw-medium py-0">
+                    <div class="d-block form-check">
+                      <input @click="toggleFilters('draft')" class="form-check-input" type="checkbox" value="" checked id="sortDraftsCheckbox">
+                      <label class="form-check-label pt-1-5" role="button" for="sortDraftsCheckbox">
+                        Draft
+                      </label>
+                    </div>
+                  </div>
+                  <div class="dropdown-item fw-medium py-0">
+                    <div class="d-block form-check">
+                      <input @click="toggleFilters('pending')" class="form-check-input" type="checkbox" value="" checked id="sortPendingCheckbox">
+                      <label class="form-check-label pt-1-5" role="button" for="sortPendingCheckbox">
+                        Pending
+                      </label>
+                    </div>
+                  </div>
+                  <div class="dropdown-item fw-bold py-0">
+                    <div class="d-block form-check">
+                      <input @click="toggleFilters('paid')" class="form-check-input" type="checkbox" value="" checked id="sortPaidCheckbox">
+                      <label class="form-check-label pt-1-5" role="button" for="sortPaidCheckbox">
+                        Paid
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button data-bs-toggle="offcanvas" href="#offcanvasNewInvoice" role="button" aria-controls="offcanvasNewInvoice" class="me-3 float-end btn d-inline bg-purple btn-round text-white small-12 p-2 fw-medium">
+              <div class="d-inline-flex align-items-center me-2 justify-content-center text-dark btn-round bg-white p-2" style="height: 30px; width: 30px;">
+                <img src="/icon-plus.svg" alt="">
+              </div>
+              <span class="d-inline-block me-2">
+                New Invoice 
+              </span>
+            </button>
+
+          </div>
+        </div>
+
+        <div class="container mt-4 pb-5 px-4">
+          <div class="row px-3">
+            <div v-if="filteredInvoices.length === 0" class="container">
+              <div class="row">
+                <div class="col-md-12 text-center pt-5">
+                  <img src="/illustration-empty.svg" alt="">
+                  <p class="mt-5 fw-bold" :class="[lightMode ? 'text-dark' : 'text-white']">
+                    There is nothing here
+                  </p>
+                  <p class="small-11 text-light">
+                    Create an invoice by clicking the <br>
+                    <span class="fw-bold">New Invoice</span> button and get started
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div v-for="(invoice, index) in filteredInvoices" :key="index" @click="this.$router.push({path: '/invoice/' + invoice.id})" class="text-light rounded px-4 py-3 mb-3 shadow hover" :class="[lightMode ? 'bg-white' : 'bg-dark-purple']" role="button">
+
+              <div class="container p-0">
+                <div class="row small-12 align-items-center py-2">
+                  <div class="d-flex w-100 justify-content-between fw-mediumer">
+                    <div>
+                      #<span class="fw-bold" :class="[lightMode ? 'text-dark' : 'text-white']">{{ invoice.id }}</span>
+                    </div>
+                    <div class="small-15">{{ invoice.clientName }}</div>
+                  </div>
+                  <div class="pt-4 d-flex justify-content-between small-15">
+                    <div>
+                      Due {{ convertDate(invoice.paymentDue) }} <br>
+                      <span class="d-block small-18 p-0 fw-bold mt-2" :class="[lightMode ? 'text-dark' : 'text-white']">
+                        £ {{ formatTotal(invoice.total) }}
+                      </span>
+                    </div>
+                    <div>
+                      <div v-if="invoice.status === 'pending'" class="d-inline-block w-104 text-orange bg-orange small-12 fw-medium p-3 ms-3 text-center rounded">
+                      <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="4" cy="4" r="4" fill="#FF8F00"/>
+                      </svg>
+                      {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
+                    </div>
+                    <div v-else-if="invoice.status === 'paid'" class="d-inline-block w-104 text-green bg-green small-12 fw-medium p-3 ms-3 text-center rounded">
+                      <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="4" cy="4" r="4" fill="#33D69F"/>
+                      </svg>
+                      {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
+                    </div>
+                    <div v-else class="d-inline-block w-104 small-12 fw-medium p-3 ms-3 text-center rounded" :class="[lightMode ? 'text-dark bg-grey' : 'bg-light-light-purple text-light-light-purple']">
+                      <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="4" cy="4" r="4" :fill="lightMode ? '#111' : '#FFF'"/>
+                      </svg>
+                      {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container d-none d-lg-block pt-5">
+      <div class="d-flex align-items-middle row pt-md-5 pt-lg-0"> 
         <div class="offset-md-2 col-md-3">
           <span class="d-block small-32 fw-medium" :class="[lightMode ? 'text-dark' : 'text-white']">Invoices</span>
           <span class="small-12" :class="[lightMode ? 'text-light' : 'text-light-purple']">
@@ -10,7 +130,6 @@
           <br>
         </div>
         <div class="col-md-5 ps-0 text-end">
-          
           <div class="btn-group">
             <div class="dropdown d-inline">
               <button class="d-inline bg-transparent fw-medium border-0 small-12 ps-3 me-4"  :class="[lightMode ? 'text-dark' : 'text-white']" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -44,8 +163,6 @@
               </div>
             </div>
           </div>
-
-
           <button data-bs-toggle="offcanvas" href="#offcanvasNewInvoice" role="button" aria-controls="offcanvasNewInvoice" class="btn d-inline bg-purple btn-round text-white small-12 p-2 fw-medium">
             <div class="d-inline-flex align-items-center me-2 justify-content-center text-dark btn-round bg-white p-2" style="height: 30px; width: 30px;">
               <img src="/icon-plus.svg" alt="">
@@ -58,7 +175,7 @@
       </div>
     </div>
 
-    <div class="container mt-5 pb-5">
+    <div class="container d-none d-md-block mt-5 pb-5">
       <div class="row">
         <div v-if="filteredInvoices.length === 0" class="container">
           <div class="row">
@@ -103,9 +220,9 @@
                     </svg>
                     {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
                   </div>
-                  <div v-else class="d-inline-block w-104 text-dark bg-grey small-12 fw-medium p-3 ms-3 text-center rounded">
+                  <div v-else class="d-inline-block w-104 small-12 fw-medium p-3 ms-3 text-center rounded" :class="[lightMode ? 'text-dark bg-grey' : 'bg-light-light-purple text-light-light-purple']">
                     <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <circle cx="4" cy="4" r="4" fill="#111"/>
+                      <circle cx="4" cy="4" r="4" :fill="lightMode ? '#111' : '#FFF'"/>
                     </svg>
                     {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
                   </div>
@@ -268,8 +385,20 @@ a {
   color: #7C5DFA;
 }
 
+.text-error { 
+  color: red;
+}
+
+.has-error {
+  outline: 1px solid red!important;
+}
+
 .text-light-light-purple {
   color: #DFE3FA;
+}
+
+.bg-light-light-purple {
+  background-color: rgba(227,223,250,.06)
 }
 
 .text-light-purple {
@@ -300,6 +429,9 @@ a {
   background-color: rgba(51,214,159,.05)
 }
 
+.border-start {
+  border-left: 1px solid #777777!important;
+}
 .rounded {
   border-radius: 8px!important;
 }

@@ -15,22 +15,34 @@
           <div class="col-md-12 mb-3 fw-medium text-purple">
             Bill From
           </div>
-          <div class="col-md-12" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Street Address <br>
+          <div class="col-md-12 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="w-100 d-flex justify-content-between">
+              <span>Street Address</span>
+              <span>can't be empty</span>
+            </div>
             <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" value="" type="text">
           </div>
         </div>
         <div class="row small-12 text-light-purple">
-          <div class="col-md-4" :class="[lightMode ? '' : 'text-light-light-purple']">
-            City <br>
+          <div class="col-md-4 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="w-100 d-flex justify-content-between">
+              <span>City</span>
+              <span>can't be empty</span>
+            </div>
             <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
           </div>
-          <div class="col-md-4" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Post Code <br>
+          <div class="col-md-4 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="w-100 d-flex justify-content-between">
+              <span>Post Code</span>
+              <span>can't be empty</span>
+            </div>
             <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
           </div>
-          <div class="col-md-4" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Country <br>
+          <div class="col-md-4 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="w-100 d-flex justify-content-between">
+              <span>Country</span>
+              <span>can't be empty</span>
+            </div>
             <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
           </div>
         </div>
@@ -39,44 +51,71 @@
           <div class="col-md-12 mb-3 fw-medium text-purple">
             Bill To
           </div>
-          <div class="col-md-12 mt-2" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Client's Name <br>
+          <div class="col-md-12 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="w-100 d-flex justify-content-between">
+              <span>Client's Name</span>
+              <span>can't be empty</span>
+            </div>
             <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" value="" type="text">
           </div>
-          <div class="col-md-12 mt-2" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Client's Email <br>
+          <div class="col-md-12 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="w-100 d-flex justify-content-between">
+              <span>Client's Email</span>
+              <span>can't be empty</span>
+            </div>
             <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" value="" type="text">
           </div>
-          <div class="col-md-12 mt-2" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Street Address <br>
+          <div class="col-md-12 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="w-100 d-flex justify-content-between">
+              <span>Street Address</span>
+              <span>can't be empty</span>
+            </div>
             <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" value="" type="text">
           </div>
         </div>
         <div class="row small-12 text-light-purple">
-          <div class="col-md-4 mt-2" :class="[lightMode ? '' : 'text-light-light-purple']">
-            City <br>
+          <div class="col-md-4 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="w-100 d-flex justify-content-between">
+              <span>City</span>
+              <span>can't be empty</span>
+            </div>
             <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
           </div>
-          <div class="col-md-4 mt-2" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Post Code <br>
+          <div class="col-md-4 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="w-100 d-flex justify-content-between">
+              <span>Post Code</span>
+              <span>can't be empty</span>
+            </div>
             <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
           </div>
-          <div class="col-md-4 mt-2" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Country <br>
+          <div class="col-md-4 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="w-100 d-flex justify-content-between">
+              <span>Country</span>
+              <span>can't be empty</span>
+            </div>
             <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
           </div>
         </div>
         <div class="row mt-4 small-12 text-light-purple">
-          <div class="col-md-6" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Invoice Date <br>
+          <div class="col-md-6 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="w-100 d-flex justify-content-between">
+              <span>Invoice Date</span>
+              <span>can't be empty</span>
+            </div>
             <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
           </div>
-          <div class="col-md-6" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Payment Terms <br>
+          <div class="col-md-6 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="w-100 d-flex justify-content-between">
+              <span>Payment Terms</span>
+              <span>can't be empty</span>
+            </div>
             <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
           </div>
-          <div class="col-md-12 mt-2" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Project Description
+          <div class="col-md-12 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="w-100 d-flex justify-content-between">
+              <span>Project Description</span>
+              <span>can't be empty</span>
+            </div>
             <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
           </div>
         </div>
@@ -84,16 +123,16 @@
           <div class="col-md-12 mt-4 mb-3 fw-medium small-18" :class="[lightMode ? '' : 'text-light-light-purple']">
             Item List
           </div>
-          <div class="col-md-5" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-5 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             Item Name
           </div>
-          <div class="col-md-1-5" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-1-5 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             Qty.
           </div>
-          <div class="col-md-3" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-3 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             Price
           </div>
-          <div class="col-md-2-5" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-2-5 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             Total
           </div>
         </div>
@@ -139,18 +178,36 @@
       </div>
     </div>
 
-    <!-- Main Invoice-List Body -->
-    <div class="fixed-top h-100 bg-dark-blue text-white d-flex flex-column align-items-start rounded-bottom-right rounded-top-right " style="width: 90px; z-index: 9999;">
-      <div class="mb-auto position-relative bg-purple d-flex align-items-center overflow-hidden w-100 vertical-align-middle rounded-top-right rounded-bottom-right" style="height: 90px; width: 90px;">
+    <!-- Mobile Nav -->
+    <div class="d-lg-none fixed-top w-100 bg-dark-blue text-white d-inline-flex justify-content-between" style="height: 70px; z-index: 9999;">
+      <div class="mb-auto position-relative bg-purple d-flex align-items-center overflow-hidden vertical-align-middle rounded-bottom-right rounded-top-right" style="height: 70px; width: 70px;">
         <nuxt-link to="/" class="mx-auto" style="z-index: 9999;">
           <img src="/logo.svg" alt="Logo">
         </nuxt-link>
-        <div class="position-absolute top-50 w-100 rounded-top-left bg-light-purple h-100"></div>
+        <div class="position-absolute top-50 w-100 rounded-top-left bg-light-purple" style="min-height: 100%;"></div>
       </div>
-      <div class="w-100 mx-auto text-center py-3">
-        <img @click="toggleLightMode()" :src="lightMode ? '/icon-moon.svg' : '/icon-sun.svg'" alt="Toggle Light/Dark Mode" role="button">
-        <hr class="">
-        <img src="/image-avatar.jpg" class="rounded-full" alt="Image Avatar">
+      <div class=" d-inline-flex align-items-center">
+        <img @click="toggleLightMode()" class="pe-4" :src="lightMode ? '/icon-moon.svg' : '/icon-sun.svg'" alt="Toggle Light/Dark Mode" role="button">
+        <div class="ms-3 h-100 border-start d-inline-flex align-items-center p-4">
+          <img src="/image-avatar.jpg" class="rounded-full" alt="Image Avatar">
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Nav -->
+    <div class="d-lg-block d-none">
+      <div class="fixed-top h-100 bg-dark-blue text-white d-flex flex-column align-items-start rounded-bottom-right rounded-top-right " style="width: 90px; z-index: 9999;">
+        <div class="mb-auto position-relative bg-purple d-flex align-items-center overflow-hidden w-100 vertical-align-middle rounded-top-right rounded-bottom-right" style="height: 90px; width: 90px;">
+          <nuxt-link to="/" class="mx-auto" style="z-index: 9999;">
+            <img src="/logo.svg" alt="Logo">
+          </nuxt-link>
+          <div class="position-absolute top-50 w-100 rounded-top-left bg-light-purple h-100"></div>
+        </div>
+        <div class="w-100 mx-auto text-center py-3">
+          <img @click="toggleLightMode()" :src="lightMode ? '/icon-moon.svg' : '/icon-sun.svg'" alt="Toggle Light/Dark Mode" role="button">
+          <hr class="">
+          <img src="/image-avatar.jpg" class="rounded-full" alt="Image Avatar">
+        </div>
       </div>
     </div>
 
