@@ -58,13 +58,13 @@
       </div>
     </div>
 
-    <div class="container mt-5 pb-4">
+    <div class="container mt-5 pb-5">
       <div class="row">
         <div v-if="filteredInvoices.length === 0" class="container">
           <div class="row">
-            <div class="offset-md-2 col-md-8 text-center">
+            <div class="offset-md-2 col-md-8 text-center pt-5">
               <img src="/illustration-empty.svg" alt="">
-              <p class="mt-5 fw-bold">
+              <p class="mt-5 fw-bold" :class="[lightMode ? 'text-dark' : 'text-white']">
                 There is nothing here
               </p>
               <p class="small-11 text-light">
@@ -74,7 +74,7 @@
             </div>
           </div>
         </div>
-        <div v-for="(invoice, index) in filteredInvoices" :key="index" @click="this.$router.push({path: '/invoice/' + invoice.id})" class="offset-md-2 col-md-8 text-light rounded px-4 py-3 mb-3 shadow hover"  :class="[lightMode ? 'bg-white' : 'bg-dark-purple']" role="button">
+        <div v-for="(invoice, index) in filteredInvoices" :key="index" @click="this.$router.push({path: '/invoice/' + invoice.id})" class="offset-md-2 col-md-8 text-light rounded px-4 py-3 mb-3 shadow hover" :class="[lightMode ? 'bg-white' : 'bg-dark-purple']" role="button">
           <!-- <nuxt-link :to="'/invoice/' + invoice.id"> -->
             <div class="container p-0">
               <div class="row small-12 align-items-center">
@@ -428,4 +428,12 @@ a {
   line-height: 20px;
 }
 
+
+.bg-light-light-purple.btn:hover {
+  color: #FFFFFF;
+}
+
+input[type="text"]:focus.text-white {
+  background-color: inherit;
+}
 </style>

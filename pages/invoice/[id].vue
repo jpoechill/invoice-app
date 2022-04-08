@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- Edit Modal -->
-    <div class="offcanvas offcanvas-start" style="padding-left: 90px; width: 750px;" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-      <div class="container bg-white p-5 offcanvas-body">
+    <div class="offcanvas offcanvas-start" :class="[lightMode ? 'bg-white' : 'bg-dark']" style="padding-left: 90px; width: 750px;" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+      <div class="container p-5 offcanvas-body">
         <div class="row">
           <div class="col-md-12">
-            <div class="small-24">
-              <span class="fw-medium">Edit</span> #<span class="fw-medium">{{ invoice.id }}</span>
+            <div class="small-24" :class="[lightMode ? '' : 'text-light-light-purple']">
+              <span class="fw-medium" :class="[lightMode ? '' : 'text-white']">Edit</span> #<span class="fw-medium" :class="[lightMode ? '' : 'text-white']">{{ invoice.id }}</span>
             </div>
           </div>
         </div>
@@ -15,23 +15,23 @@
           <div class="col-md-12 mb-3 fw-medium text-purple">
             Bill From
           </div>
-          <div class="col-md-12">
+          <div class="col-md-12" :class="[lightMode ? '' : 'text-light-light-purple']">
             Street Address <br>
-            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" v-model="invoiceCopy.senderAddress.street" type="text">
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoiceCopy.senderAddress.street" type="text">
           </div>
         </div>
         <div class="row small-12 text-light-purple">
-          <div class="col-md-4">
+          <div class="col-md-4" :class="[lightMode ? '' : 'text-light-light-purple']">
             City <br>
-            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" type="text"  v-model="invoiceCopy.senderAddress.city">
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text"  v-model="invoiceCopy.senderAddress.city">
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4" :class="[lightMode ? '' : 'text-light-light-purple']">
             Post Code <br>
-            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" v-model="invoiceCopy.senderAddress.postCode">
+            <input class="form-control mt-2 small-12 fw-medium p-3"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="invoiceCopy.senderAddress.postCode">
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4" :class="[lightMode ? '' : 'text-light-light-purple']">
             Country <br>
-            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" v-model="invoiceCopy.senderAddress.country">
+            <input class="form-control mt-2 small-12 fw-medium p-3"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="invoiceCopy.senderAddress.country">
           </div>
         </div>
 
@@ -39,73 +39,73 @@
           <div class="col-md-12 mb-3 fw-medium text-purple">
             Bill To
           </div>
-          <div class="col-md-12 mt-2">
+          <div class="col-md-12 mt-2" :class="[lightMode ? '' : 'text-light-light-purple']">
             Client's Name <br>
-            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" v-model="invoiceCopy.clientName" type="text">
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoiceCopy.clientName" type="text">
           </div>
-          <div class="col-md-12 mt-2">
+          <div class="col-md-12 mt-2" :class="[lightMode ? '' : 'text-light-light-purple']">
             Client's Email <br>
-            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" v-model="invoiceCopy.clientEmail"  type="text">
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoiceCopy.clientEmail"  type="text">
           </div>
-          <div class="col-md-12 mt-2">
+          <div class="col-md-12 mt-2" :class="[lightMode ? '' : 'text-light-light-purple']">
             Street Address <br>
-            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" v-model="invoiceCopy.clientAddress.street"  type="text">
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoiceCopy.clientAddress.street"  type="text">
           </div>
         </div>
         <div class="row small-12 text-light-purple">
-          <div class="col-md-4 mt-2">
+          <div class="col-md-4 mt-2" :class="[lightMode ? '' : 'text-light-light-purple']">
             City <br>
-            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" type="text" v-model="invoiceCopy.clientAddress.city" >
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" type="text"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoiceCopy.clientAddress.city" >
           </div>
-          <div class="col-md-4 mt-2">
+          <div class="col-md-4 mt-2" :class="[lightMode ? '' : 'text-light-light-purple']">
             Post Code <br>
-            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" v-model="invoiceCopy.clientAddress.postCode">
+            <input class="form-control mt-2 small-12 fw-medium p-3" type="text"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoiceCopy.clientAddress.postCode">
           </div>
-          <div class="col-md-4 mt-2">
+          <div class="col-md-4 mt-2" :class="[lightMode ? '' : 'text-light-light-purple']">
             Country <br>
-            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" v-model="invoiceCopy.clientAddress.country" >
+            <input class="form-control mt-2 small-12 fw-medium p-3" type="text"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoiceCopy.clientAddress.country" >
           </div>
         </div>
         <div class="row mt-4 small-12 text-light-purple">
-          <div class="col-md-6">
+          <div class="col-md-6" :class="[lightMode ? '' : 'text-light-light-purple']">
             Invoice Date <br>
-            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" type="text" value="London">
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="London">
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6" :class="[lightMode ? '' : 'text-light-light-purple']">
             Payment Terms <br>
-            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" v-model="invoiceCopy.paymentTerms">
+            <input class="form-control mt-2 small-12 fw-medium p-3"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="invoiceCopy.paymentTerms">
           </div>
-          <div class="col-md-12 mt-2">
+          <div class="col-md-12 mt-2" :class="[lightMode ? '' : 'text-light-light-purple']">
             Project Description
-            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" v-model="invoiceCopy.description" >
+            <input class="form-control mt-2 small-12 fw-medium p-3"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="invoiceCopy.description" >
           </div>
         </div>
         <div class="row small-12 text-light-purple">
-          <div class="col-md-12 mt-4 mb-3 fw-medium small-18">
+          <div class="col-md-12 mt-4 mb-3 fw-medium small-18" :class="[lightMode ? '' : 'text-light-light-purple']">
             Item List
           </div>
-          <div class="col-md-5">
+          <div class="col-md-5" :class="[lightMode ? '' : 'text-light-light-purple']">
             Item Name
           </div>
-          <div class="col-md-1-5">
+          <div class="col-md-1-5" :class="[lightMode ? '' : 'text-light-light-purple']">
             Qty.
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3" :class="[lightMode ? '' : 'text-light-light-purple']">
             Price
           </div>
-          <div class="col-md-2-5">
+          <div class="col-md-2-5" :class="[lightMode ? '' : 'text-light-light-purple']">
             Total
           </div>
         </div>
         <div v-for="(item, index) in invoiceCopy.items" :key="index" class="row d-flex align-items-center mb-2">
           <div class="col-md-5">
-            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" v-model="item.name" placeholder="Web development">
+            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="item.name" placeholder="Web development">
           </div>
           <div class="col-md-1-5">
-            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" v-model="item.quantity">
+            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="item.quantity">
           </div>
           <div class="col-md-3">
-            <input class="form-control mt-2 small-12 fw-medium p-3" type="text" v-model="item.price" placeholder="99.99">
+            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="item.price" placeholder="99.99">
           </div>
           <div class="col-md-2-5 text-light small-12 fw-medium">
             {{ item.quantity * item.price }}
@@ -114,7 +114,7 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-            <button @click="addNewInvoiceItem()" class="btn bg-light text-light text-dark btn-round small-12 w-100 p-3 my-3 px-4 fw-medium me-2">
+            <button @click="addNewInvoiceItem()" class="btn btn-round small-12 w-100 p-3 my-3 px-4 fw-medium me-2" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']">
               + Add New Item
             </button>
           </div>
@@ -122,7 +122,7 @@
         <div class="row mt-3">
           <div class="col-md-12">
             <div class="float-end">
-              <button class="btn bg-light text-light text-dark btn-round small-12 p-3 px-4 fw-medium me-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample">
+              <button class="btn btn-round small-12 p-3 px-4 fw-medium me-2" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample">
                 Cancel
               </button>
               <button @click="updateInvoice()" class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample">
