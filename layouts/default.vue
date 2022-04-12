@@ -2,7 +2,7 @@
   <div>
     <!-- New Invoice Modal -->
     <div class="offcanvas offcanvas-start p-special" :class="[lightMode ? '' : 'bg-dark']" style="width: 750px;" tabindex="-1" id="offcanvasNewInvoice" aria-labelledby="offcanvasNewInvoiceLabel">
-      <div class="container p-5 mt-5 mt-lg-0 offcanvas-body smooth-scroll" ref="myModal">
+      <div class="container p-5 mt-5 mt-lg-0 offcanvas-body smooth-scroll" ref="newInvoiceModal">
         <div class="row">
           <div class="col-md-12">
             <div class="small-24">
@@ -226,37 +226,38 @@
             <div class="col-md-12 mt-4 mb-3 fw-medium small-18" :class="[lightMode ? '' : 'text-light-light-purple']">
               Item List
             </div>
-            <div class="col-md-5" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="col-md-4" :class="[lightMode ? '' : 'text-light-light-purple']">
               Item Name
             </div>
-            <div class="col-md-1-5" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="col-md-2" :class="[lightMode ? '' : 'text-light-light-purple']">
               Qty.
             </div>
             <div class="col-md-3" :class="[lightMode ? '' : 'text-light-light-purple']">
               Price
             </div>
-            <div class="col-md-2-5" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="col-md-3" :class="[lightMode ? '' : 'text-light-light-purple']">
               Total
             </div>
           </div>
           <div v-for="(item, index) in invoice.items" :key="index" class="row d-flex align-items-center mb-2">
-            <div class="col-md-5">
-              <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="item.name" placeholder="Web development">
+            <div class="col-md-4">
+              
+              <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="item.name.value" placeholder="">
             </div>
-            <div class="col-md-1-5">
-              <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="item.quantity">
+            <div class="col-md-2">
+              <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="number" v-model="item.quantity.value">
             </div>
             <div class="col-md-3">
-              <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="item.price" placeholder="99.99">
+              <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="number" v-model="item.price" placeholder="99.99">
             </div>
-            <div class="col-md-2-5 text-light small-12 fw-medium">
-              {{ item.quantity * item.price }}
+            <div class="col-md-3 text-light small-12 fw-medium">
+              {{ item.quantity.value * item.price.value }}
               <img class="float-end" @click="removeInvoiceItem(index)" role="button" src="/icon-delete.svg" alt="Delete">
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-12 mt-2 mb-3">
             <button @click="addNewInvoiceItem()" class="btn btn-round small-12 w-100 p-3 mt-2 mb-3 px-4 fw-medium me-2" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']" >
               + Add New Item
             </button>
@@ -268,14 +269,11 @@
               Discard
             </button>
             <div class="float-end">
-              <button @click="validateNewInvoice()" class="btn bg-light text-dark btn-round small-12 p-3 me-2 px-4 fw-medium">
-                Validate
-              </button>
               <button @click="submitNewDraft()" class="btn btn-round small-12 p-3 px-4 fw-medium me-2" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNewInvoice">
                 Save as Draft
               </button>
               <button @click="submitNewInvoice()" class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNewInvoice">
-                Save Changes
+                Save and Send
               </button>
             </div>
           </div>
@@ -395,10 +393,22 @@ export default defineComponent({
         },
         "items": [
           {
-            "name": "Brand Guidelines",
-            "quantity": 1,
-            "price": 1800.90,
-            "total": 1800.90
+            "name": {
+              value: "Brand Guidelines",
+              hasError: true,
+            },
+            "quantity":  {
+              value: 1,
+              hasError: true,
+            },
+            "price":  {
+              value: "1800.90",
+              hasError: true,
+            },
+            "total":  {
+              value: "1800.90",
+              hasError: true,
+            }
           }
         ],
         "total": 1800.90
@@ -415,8 +425,6 @@ export default defineComponent({
       // console.log('from store: ' + useStore().lightMode)
     },
     validateNewInvoice: function () {
-      // alert('Validate invoice form!')
-
       let hasErrors = false
 
       if (this.invoice.description.value === '') {
@@ -497,23 +505,69 @@ export default defineComponent({
       }
 
       if (hasErrors) {
-        this.$refs.myModal.scrollTo(0,0)
+        this.$refs.newInvoiceModal.scrollTo(0,0)
         return false
       } else {
         return true
       }
     },
     submitNewInvoice: function () {
-      // console.log('Submit new draft')
       if (this.validateNewInvoice()) {
-        this.store.submitNewInvoice()
+        this.store.submitNewInvoice(
+          {
+            "createdAt": this.invoice.createdAt,
+            "paymentDue": this.invoice.paymentDue,
+            "description": this.invoice.description.value,
+            "paymentTerms": 1,
+            "clientName": this.invoice.clientName.value,
+            "clientEmail": this.invoice.clientEmail.value,
+            "status": 'pending',
+            "senderAddress": {
+              "street": this.invoice.senderAddress.street.value,
+              "city": this.invoice.senderAddress.city.value,
+              "postCode": this.invoice.senderAddress.postCode.value,
+              "country": this.invoice.senderAddress.country.value,
+            },
+            "clientAddress": {
+              "street": this.invoice.clientAddress.street.value,
+              "city": this.invoice.clientAddress.city.value,
+              "postCode": this.invoice.clientAddress.postCode.value,
+              "country": this.invoice.clientAddress.country.value,
+            },
+            "items": this.invoice.items,
+            "total": this.invoice.total
+          }
+        )
       } else {
         console.log('Please check form errors')
       }
     },
     submitNewDraft: function () {
-      // console.log('Submit new draft')
-      this.store.submitNewDraft()
+      this.store.submitNewDraft(
+        {
+          "createdAt": this.invoice.createdAt,
+          "paymentDue": this.invoice.paymentDue,
+          "description": this.invoice.description.value,
+          "paymentTerms": 1,
+          "clientName": this.invoice.clientName.value,
+          "clientEmail": this.invoice.clientEmail.value,
+          "status": 'pending',
+          "senderAddress": {
+            "street": this.invoice.senderAddress.street.value,
+            "city": this.invoice.senderAddress.city.value,
+            "postCode": this.invoice.senderAddress.postCode.value,
+            "country": this.invoice.senderAddress.country.value,
+          },
+          "clientAddress": {
+            "street": this.invoice.clientAddress.street.value,
+            "city": this.invoice.clientAddress.city.value,
+            "postCode": this.invoice.clientAddress.postCode.value,
+            "country": this.invoice.clientAddress.country.value,
+          },
+          "items": this.invoice.items,
+          "total": this.invoice.total
+        }
+      )
     },
     addNewInvoiceItem: function () {
       this.invoice.items.push(
@@ -534,11 +588,11 @@ export default defineComponent({
             value: "",
             hasError: true,
           }
-        })
+        }
+      )
     },
   },
   watch: {
-  // whenever active changes, this function will run
     lightMode: function () {
       if (this.lightMode) {
         document.body.classList.remove('bg-dark')

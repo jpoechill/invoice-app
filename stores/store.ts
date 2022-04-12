@@ -19,12 +19,20 @@ export const useStore = defineStore('storeId', {
       this.invoices = this.invoices.filter(x => x.id !== id)
     },
     submitNewInvoice: function (payload) {
-      console.log('Submit new invoice')
-      // this.invoices.push(payload)
+      payload.id = makeid()
+      payload.status = 'pending'
+      payload.createdAt = getDate()
+      payload.paymentDue = futureDate()
+
+      this.invoices.push(payload)
     },
     submitNewDraft: function (payload) {
-      console.log('Submit new draft')
-      // this.invoices.push(payload)
+      payload.id = makeid()
+      payload.status = 'draft'
+      payload.createdAt = getDate()
+      payload.paymentDue = futureDate()
+
+      this.invoices.push(payload)
     },
     markInvoicePaid(id){
       this.invoices = this.invoices.map(x => {
@@ -66,4 +74,38 @@ export const useStore = defineStore('storeId', {
 
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useStore, import.meta.hot))
+}
+
+// generateID
+// https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+function makeid() {
+  var result = '';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  var numbers = '0123456789'
+
+  for ( var i = 0; i < 2; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  for ( var i = 0; i < 4; i++ ) {
+    result += numbers.charAt(Math.floor(Math.random() * numbers.length));
+  }
+
+  return result;
+}
+
+function getDate() {
+  // format: "2021-08-18"
+  let today = new Date()
+  return today.getFullYear() + '-' + 
+  String(today.getMonth()).padStart(2, '0') + 
+  '-' + String(today.getDate()).padStart(2, '0')
+}
+
+function futureDate() {
+  // format: "2021-08-18"
+  let today = new Date()
+  return today.getFullYear() + '-' + 
+  String(today.getMonth() + 1).padStart(2, '0') + 
+  '-' + String(today.getDate()).padStart(2, '0')
 }
