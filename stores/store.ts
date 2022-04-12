@@ -18,6 +18,14 @@ export const useStore = defineStore('storeId', {
     deleteInvoice(id){
       this.invoices = this.invoices.filter(x => x.id !== id)
     },
+    submitNewInvoice: function (payload) {
+      console.log('Submit new invoice')
+      // this.invoices.push(payload)
+    },
+    submitNewDraft: function (payload) {
+      console.log('Submit new draft')
+      // this.invoices.push(payload)
+    },
     markInvoicePaid(id){
       this.invoices = this.invoices.map(x => {
         if (x.id === id) {
@@ -37,7 +45,6 @@ export const useStore = defineStore('storeId', {
       })
     },
     updateInvoice(id, payload){
-      console.log('ooga booga')
       this.invoices = this.invoices.map(x => {
         if (x.id === id) {
           x = payload
@@ -47,7 +54,6 @@ export const useStore = defineStore('storeId', {
       })
     }
   },
-
   getters:{
     // getCount:(state)=>state.counter,
     getLightMode: (state)=> {

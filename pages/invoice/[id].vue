@@ -40,7 +40,7 @@
           <div class="col-md-12 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             <div class="w-100 d-flex justify-content-between">
               <span>Street Address</span>
-              <span>can't be empty</span>
+              <span>Can't be empty</span>
             </div>
             <input class="form-control mb-4 mt-2 small-12 fw-medium p-3 has-error" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoiceCopy.senderAddress.street" type="text">
           </div>
@@ -49,21 +49,21 @@
           <div class="col-md-4 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             <div class="w-100 d-flex justify-content-between">
               <span>City</span>
-              <span>can't be empty</span>
+              <span>Can't be empty</span>
             </div>
             <input class="form-control mb-4 mt-2 small-12 fw-medium p-3 has-error"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text"  v-model="invoiceCopy.senderAddress.city">
           </div>
           <div class="col-md-4 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             <div class="w-100 d-flex justify-content-between">
               <span>Post Code</span>
-              <span>can't be empty</span>
+              <span>Can't be empty</span>
             </div>
             <input class="form-control mb-4 mt-2 small-12 fw-medium p-3 has-error"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="invoiceCopy.senderAddress.postCode">
           </div>
           <div class="col-md-4 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             <div class="w-100 d-flex justify-content-between">
               <span>Country</span>
-              <span>can't be empty</span>
+              <span>Can't be empty</span>
             </div>
             <input class="form-control mt-2 small-12 fw-medium p-3 has-error"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="invoiceCopy.senderAddress.country">
           </div>
@@ -76,21 +76,21 @@
           <div class="col-md-12 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             <div class="w-100 d-flex justify-content-between">
               <span>Client's Name </span>
-              <span>can't be empty</span>
+              <span>Can't be empty</span>
             </div>
             <input class="form-control mb-3 mt-2 small-12 fw-medium p-3 has-error"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoiceCopy.clientName" type="text">
           </div>
           <div class="col-md-12 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             <div class="w-100 d-flex justify-content-between">
               <span>Client's Email</span>
-              <span>can't be empty</span>
+              <span>Can't be empty</span>
             </div>
             <input class="form-control mb-3 mt-2 small-12 fw-medium p-3 has-error"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoiceCopy.clientEmail"  type="text">
           </div>
           <div class="col-md-12 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             <div class="w-100 d-flex justify-content-between">
               <span>Street Address</span>
-              <span>can't be empty</span>
+              <span>Can't be empty</span>
             </div>
             <input class="form-control mb-3 mt-2 small-12 fw-medium p-3 has-error"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoiceCopy.clientAddress.street"  type="text">
           </div>
@@ -99,21 +99,21 @@
           <div class="col-md-4 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             <div class="w-100 d-flex justify-content-between">
               <span>City</span>
-              <span>can't be empty</span>
+              <span>Can't be empty</span>
             </div>
             <input class="form-control mb-3 mt-2 small-12 fw-medium p-3 has-error" type="text"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoiceCopy.clientAddress.city" >
           </div>
           <div class="col-md-4 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             <div class="w-100 d-flex justify-content-between">
               <span>Post Code</span>
-              <span>can't be empty</span>
+              <span>Can't be empty</span>
             </div>
             <input class="form-control mt-2 small-12 fw-medium mb-3 p-3 has-error" type="text"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoiceCopy.clientAddress.postCode">
           </div>
           <div class="col-md-4 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             <div class="w-100 d-flex justify-content-between">
               <span>Country</span>
-              <span>can't be empty</span>
+              <span>Can't be empty</span>
             </div>
             <input class="form-control mt-2 small-12 fw-medium p-3 has-error" type="text"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoiceCopy.clientAddress.country" >
           </div>
@@ -122,68 +122,82 @@
           <div class="col-md-6 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             <div class="w-100 d-flex justify-content-between">
               <span>Invoice Date</span>
-              <span>can't be empty</span>
+              <span>Can't be empty</span>
             </div>
-            <input class="form-control mb-4 mt-2 small-12 fw-medium p-3 has-error"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="London">
-          </div>
-          <div class="col-md-6 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
-            
-            <div class="w-100 d-flex justify-content-between">
-              <span>Payment Terms</span>
-              <span>can't be empty</span>
-            </div>
-        <div class="w-100 d-flex align-items-center justify-content-end ps-0 mb-3">
-          <div class="float-end w-100">
-            <div class="btn-group pt-2 w-100 ps-0">
-              <div class="dropdown d-inline w-100">
-                <button class="form-control p-3 fw-medium small-12 w-100" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="float-start">Net 30 Days </span>
-                  <img src="/icon-arrow-down.svg" class="pt-1 ms-2 float-end" alt="Filter by status">
-                </button>
-                <!-- <button class="d-inline bg-transparent fw-medium border small-12 ps-3 me-3"  :class="[lightMode ? 'text-dark' : 'text-white']" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Filter
-                  <img src="/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
-                </button> -->
-                <div class="dropdown-menu small-12 p-2 pt-3 pb-3 mt-2 px-0 w-100" aria-labelledby="dropdownMenuButton" role="button">
-                  <div class="dropdown-item fw-medium py-0 border-bottom">
-                    <div class="d-block form-check ps-0">
-                      <label class="form-check-label py-2" role="button" for="sortDraftsCheckbox">
-                        Net 1 Day
-                      </label>
-                    </div>
-                  </div>
-                  <div class="dropdown-item fw-medium py-0 border-bottom">
-                    <div class="d-block form-check ps-0">
-                      <label class="form-check-label py-3" role="button" for="sortPendingCheckbox">
-                        Net 7 Days
-                      </label>
-                    </div>
-                  </div>
-                  <div class="dropdown-item fw-medium py-0 border-bottom">
-                    <div class="d-block form-check ps-0">
-                      <label class="form-check-label py-3" role="button" for="sortPaidCheckbox">
-                        Net 14 Days
-                      </label>
-                    </div>
-                  </div>
-                  <div class="dropdown-item fw-medium py-0">
-                    <div class="d-block form-check ps-0">
-                      <label class="form-check-label pt-3" role="button" for="sortPaidCheckbox">
-                        Net 30 Days
-                      </label>
+            <div class="w-100 d-flex align-items-center justify-content-end ps-0 mb-3">
+              <div class="float-end w-100">
+                <div class="btn-group pt-2 w-100 ps-0">
+                  <div class="dropdown d-inline w-100">
+                    <button class="form-control p-3 fw-medium small-12 w-100" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="float-start">Net 30 Days </span>
+                      <img src="/icon-calendar.svg" class="pb-0 ms-2 float-end" alt="Filter by status">
+                    </button>
+                    <div class="dropdown-menu small-12 p-2 pt-3 pb-3 mt-2 px-0 w-100" aria-labelledby="dropdownMenuButton" role="button">
+                      <div class="dropdown-item fw-medium py-0">
+                        <div class="d-block form-check ps-0">
+                          <label class="form-check-label py-2" role="button" for="sortDraftsCheckbox">
+                            Net 1 Day
+                          </label>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-
+          <div class="col-md-6 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+            <div class="w-100 d-flex justify-content-between">
+              <span>Payment Terms</span>
+              <span>Can't be empty</span>
+            </div>
+            <div class="w-100 d-flex align-items-center justify-content-end ps-0 mb-3">
+              <div class="float-end w-100">
+                <div class="btn-group pt-2 w-100 ps-0">
+                  <div class="dropdown d-inline w-100">
+                    <button class="form-control p-3 fw-medium small-12 w-100" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="float-start">Net 30 Days </span>
+                      <img src="/icon-arrow-down.svg" class="pt-1 ms-2 float-end" alt="Filter by status">
+                    </button>
+                    <div class="dropdown-menu small-12 p-2 pt-3 pb-3 mt-2 px-0 w-100" aria-labelledby="dropdownMenuButton" role="button">
+                      <div class="dropdown-item fw-medium py-0 border-bottom">
+                        <div class="d-block form-check ps-0">
+                          <label class="form-check-label py-2" role="button" for="sortDraftsCheckbox">
+                            Net 1 Day
+                          </label>
+                        </div>
+                      </div>
+                      <div class="dropdown-item fw-medium py-0 border-bottom">
+                        <div class="d-block form-check ps-0">
+                          <label class="form-check-label py-3" role="button" for="sortPendingCheckbox">
+                            Net 7 Days
+                          </label>
+                        </div>
+                      </div>
+                      <div class="dropdown-item fw-medium py-0 border-bottom">
+                        <div class="d-block form-check ps-0">
+                          <label class="form-check-label py-3" role="button" for="sortPaidCheckbox">
+                            Net 14 Days
+                          </label>
+                        </div>
+                      </div>
+                      <div class="dropdown-item fw-medium py-0">
+                        <div class="d-block form-check ps-0">
+                          <label class="form-check-label pt-3" role="button" for="sortPaidCheckbox">
+                            Net 30 Days
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="col-md-12 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
             <div class="w-100 d-flex justify-content-between">
               <span>Project Description</span>
-              <span>can't be empty</span>
+              <span>Can't be empty</span>
             </div>
             <input class="form-control mt-2 small-12 fw-medium p-3 has-error"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="invoiceCopy.description" >
           </div>

@@ -19,7 +19,7 @@
                 <div class="dropdown-menu small-12 p-2 pt-3 pb-2 mt-3" aria-labelledby="dropdownMenuButton">
                   <div class="dropdown-item fw-medium py-0">
                     <div class="d-block form-check">
-                      <input @click="toggleFilters('draft')" class="form-check-input" type="checkbox" value="" checked id="sortDraftsCheckbox">
+                      <input @click="toggleFilters('draft')" class="form-check-input" type="checkbox" v-model="filtersObj.draft" id="sortDraftsCheckbox">
                       <label class="form-check-label pt-1-5" role="button" for="sortDraftsCheckbox">
                         Draft
                       </label>
@@ -27,7 +27,7 @@
                   </div>
                   <div class="dropdown-item fw-medium py-0">
                     <div class="d-block form-check">
-                      <input @click="toggleFilters('pending')" class="form-check-input" type="checkbox" value="" checked id="sortPendingCheckbox">
+                      <input @click="toggleFilters('pending')" class="form-check-input" type="checkbox" v-model="filtersObj.pending" checked id="sortPendingCheckbox">
                       <label class="form-check-label pt-1-5" role="button" for="sortPendingCheckbox">
                         Pending
                       </label>
@@ -35,7 +35,7 @@
                   </div>
                   <div class="dropdown-item fw-bold py-0">
                     <div class="d-block form-check">
-                      <input @click="toggleFilters('paid')" class="form-check-input" type="checkbox" value="" checked id="sortPaidCheckbox">
+                      <input @click="toggleFilters('paid')" class="form-check-input" type="checkbox" v-model="filtersObj.paid" checked id="sortPaidCheckbox">
                       <label class="form-check-label pt-1-5" role="button" for="sortPaidCheckbox">
                         Paid
                       </label>
@@ -119,6 +119,7 @@
       </div>
     </div>
 
+    <!-- Desktop List -->
     <div class="container d-none d-lg-block pt-5">
       <div class="d-flex align-items-middle row pt-md-5 pt-lg-0"> 
         <div class="offset-md-2 col-md-3">
@@ -137,24 +138,24 @@
               <div class="dropdown-menu small-12 p-2 pt-3 pb-2 mt-3" aria-labelledby="dropdownMenuButton">
                 <div class="dropdown-item fw-medium py-0">
                   <div class="d-block form-check">
-                    <input @click="toggleFilters('draft')" class="form-check-input" type="checkbox" value="" checked id="sortDraftsCheckbox">
-                    <label class="form-check-label pt-1-5" role="button" for="sortDraftsCheckbox">
+                    <input @click="toggleFilters('draft')" class="form-check-input" type="checkbox"  v-model="filtersObj.draft" id="sortDraftsCheckbox1">
+                    <label class="form-check-label pt-1-5" role="button" for="sortDraftsCheckbox1">
                       Draft
                     </label>
                   </div>
                 </div>
                 <div class="dropdown-item fw-medium py-0">
                   <div class="d-block form-check">
-                    <input @click="toggleFilters('pending')" class="form-check-input" type="checkbox" value="" checked id="sortPendingCheckbox">
-                    <label class="form-check-label pt-1-5" role="button" for="sortPendingCheckbox">
+                    <input @click="toggleFilters('pending')" class="form-check-input" type="checkbox"  v-model="filtersObj.pending" checked id="sortPendingCheckbox1">
+                    <label class="form-check-label pt-1-5" role="button" for="sortPendingCheckbox1">
                       Pending
                     </label>
                   </div>
                 </div>
                 <div class="dropdown-item fw-bold py-0">
                   <div class="d-block form-check">
-                    <input @click="toggleFilters('paid')" class="form-check-input" type="checkbox" value="" checked id="sortPaidCheckbox">
-                    <label class="form-check-label pt-1-5" role="button" for="sortPaidCheckbox">
+                    <input @click="toggleFilters('paid')" class="form-check-input" type="checkbox" value=""  v-model="filtersObj.paid" id="sortPaidCheckbox1">
+                    <label class="form-check-label pt-1-5" role="button" for="sortPaidCheckbox1">
                       Paid
                     </label>
                   </div>
@@ -253,14 +254,19 @@ export default defineComponent({
     },
     filteredInvoices: function () {
       return this.allInvoices.filter(x => {
-        return this.filters.includes(x.status)
+        return this.filtersObj[x.status]
       }) 
     }
   },
   data() {
     return {
       // filteredInvoices: [],
-      filters: ['draft', 'pending', 'paid'],
+      myVal: false,
+      filtersObj: {
+        draft: true,
+        pending: true,
+        paid: true
+      },
       allInvoices: useStore().invoices,
       store: null,
     }
@@ -274,15 +280,16 @@ export default defineComponent({
   },
   methods: {
     toggleFilters: function (filterItem) {
-      let index = this.filters.indexOf(filterItem)
+      // let index = this.filters.indexOf(filterItem)
 
       console.log('click: ' + filterItem)
 
-      if (index >= 0) {
-        this.filters.splice(index, 1)
-      } else {
-        this.filters.push(filterItem)
-      }
+      this.filtersObj[filterItem] = !this.filtersObj[filterItem]
+      // if (index >= 0) {
+      //   this.filters.splice(index, 1)
+      // } else {
+      //   this.filters.push(filterItem)
+      // }
     },
     formatTotal: function (n) {
       let val = Math.round(Number(n) * 100) / 100;
