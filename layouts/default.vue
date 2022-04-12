@@ -1,8 +1,8 @@
 <template>
   <div>
     <!-- New Invoice Modal -->
-    <div class="offcanvas offcanvas-start" :class="[lightMode ? '' : 'bg-dark']" style="padding-left: 90px; width: 750px;" tabindex="-1" id="offcanvasNewInvoice" aria-labelledby="offcanvasNewInvoiceLabel">
-      <div class="container p-5 offcanvas-body">
+    <div class="offcanvas offcanvas-start p-special" :class="[lightMode ? '' : 'bg-dark']" style="width: 750px;" tabindex="-1" id="offcanvasNewInvoice" aria-labelledby="offcanvasNewInvoiceLabel">
+      <div class="container p-5 mt-5 mt-lg-0 offcanvas-body smooth-scroll" ref="myModal">
         <div class="row">
           <div class="col-md-12">
             <div class="small-24">
@@ -15,35 +15,35 @@
           <div class="col-md-12 mb-3 fw-medium text-purple">
             Bill From
           </div>
-          <div class="col-md-12 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-12" :class="[lightMode ? '' : 'text-light-light-purple', invoice.senderAddress.street.hasError ?  'text-error' : '']">
             <div class="w-100 d-flex justify-content-between">
               <span>Street Address</span>
-              <span>can't be empty</span>
+              <span v-if="invoice.senderAddress.street.hasError">can't be empty</span>
             </div>
-            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" value="" type="text">
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoice.senderAddress.street.value" type="text">
           </div>
         </div>
         <div class="row small-12 text-light-purple">
-          <div class="col-md-4 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-4" :class="[lightMode ? '' : 'text-light-light-purple', invoice.senderAddress.city.hasError ?  'text-error' : '']">
             <div class="w-100 d-flex justify-content-between">
               <span>City</span>
-              <span>can't be empty</span>
+              <span v-if="invoice.senderAddress.city.hasError">can't be empty</span>
             </div>
-            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="invoice.senderAddress.city.value">
           </div>
-          <div class="col-md-4 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-4" :class="[lightMode ? '' : 'text-light-light-purple', invoice.senderAddress.postCode.hasError ?  'text-error' : '']">
             <div class="w-100 d-flex justify-content-between">
               <span>Post Code</span>
-              <span>can't be empty</span>
+              <span v-if="invoice.senderAddress.postCode.hasError">can't be empty</span>
             </div>
-            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
+            <input class="form-control mt-2 mb-3 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="invoice.senderAddress.postCode.value">
           </div>
-          <div class="col-md-4 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-4" :class="[lightMode ? '' : 'text-light-light-purple', invoice.senderAddress.country.hasError ?  'text-error' : '']">
             <div class="w-100 d-flex justify-content-between">
               <span>Country</span>
-              <span>can't be empty</span>
+              <span v-if="invoice.senderAddress.country.hasError">can't be empty</span>
             </div>
-            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
+            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="invoice.senderAddress.country.value">
           </div>
         </div>
 
@@ -51,111 +51,193 @@
           <div class="col-md-12 mb-3 fw-medium text-purple">
             Bill To
           </div>
-          <div class="col-md-12 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-12 mt-2" :class="[lightMode ? '' : 'text-light-light-purple', invoice.clientName.hasError ?  'text-error' : '']">
             <div class="w-100 d-flex justify-content-between">
               <span>Client's Name</span>
-              <span>can't be empty</span>
+              <span v-if="invoice.clientName.hasError">can't be empty</span>
             </div>
-            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" value="" type="text">
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoice.clientName.value" type="text">
           </div>
-          <div class="col-md-12 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-12 mt-2" :class="[lightMode ? '' : 'text-light-light-purple', invoice.clientEmail.hasError ?  'text-error' : '']">
             <div class="w-100 d-flex justify-content-between">
               <span>Client's Email</span>
-              <span>can't be empty</span>
+              <span v-if="invoice.clientEmail.hasError">can't be empty</span>
             </div>
-            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" value="" type="text">
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoice.clientEmail.value" type="text">
           </div>
-          <div class="col-md-12 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-12 mt-2" :class="[lightMode ? '' : 'text-light-light-purple', invoice.clientAddress.street.hasError ?  'text-error' : '']">
             <div class="w-100 d-flex justify-content-between">
               <span>Street Address</span>
-              <span>can't be empty</span>
+              <span v-if="invoice.clientAddress.street.hasError">can't be empty</span>
             </div>
-            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" value="" type="text">
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" v-model="invoice.clientAddress.street.value" type="text">
           </div>
         </div>
         <div class="row small-12 text-light-purple">
-          <div class="col-md-4 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-4 mt-2" :class="[lightMode ? '' : 'text-light-light-purple', invoice.clientAddress.city.hasError ?  'text-error' : '']">
             <div class="w-100 d-flex justify-content-between">
               <span>City</span>
-              <span>can't be empty</span>
+              <span v-if="invoice.clientAddress.city.hasError">can't be empty</span>
             </div>
-            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
+            <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="invoice.clientAddress.city.value">
           </div>
-          <div class="col-md-4 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-4 mt-2 mb-3" :class="[lightMode ? '' : 'text-light-light-purple', invoice.clientAddress.postCode.hasError ?  'text-error' : '']">
             <div class="w-100 d-flex justify-content-between">
               <span>Post Code</span>
-              <span>can't be empty</span>
+              <span v-if="invoice.clientAddress.postCode.hasError">can't be empty</span>
             </div>
-            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
+            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="invoice.clientAddress.postCode.value">
           </div>
-          <div class="col-md-4 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-4 mt-2" :class="[lightMode ? '' : 'text-light-light-purple', invoice.clientAddress.country.hasError ?  'text-error' : '']">
             <div class="w-100 d-flex justify-content-between">
               <span>Country</span>
-              <span>can't be empty</span>
+              <span v-if="invoice.clientAddress.country.hasError">can't be empty</span>
             </div>
-            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
+            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="invoice.clientAddress.country.value">
           </div>
         </div>
-        <div class="row mt-4 small-12 text-light-purple">
-          <div class="col-md-6 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+        <div class="row mt-3 small-12 text-light-purple">
+          <div class="col-md-6 mb-2" :class="[lightMode ? '' : 'text-light-light-purple']">
             <div class="w-100 d-flex justify-content-between">
               <span>Invoice Date</span>
-              <span>can't be empty</span>
+              <span v-if="invoice.senderAddress.street.hasError">can't be empty</span>
             </div>
             <input class="form-control mb-3 mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
           </div>
-          <div class="col-md-6 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-6 mb-3" :class="[lightMode ? '' : 'text-light-light-purple']">
             <div class="w-100 d-flex justify-content-between">
               <span>Payment Terms</span>
-              <span>can't be empty</span>
+              <span v-if="invoice.senderAddress.street.hasError">can't be empty</span>
             </div>
-            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
+            <div class="w-100 d-flex align-items-center justify-content-end ps-0">
+              <div class="float-end w-100">
+                <div class="btn-group pt-2 w-100 ps-0">
+                  <div class="dropdown d-inline w-100">
+                    <button class="form-control p-3 fw-medium small-12 w-100" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="float-start">Net 30 Days </span>
+                      <img src="/icon-arrow-down.svg" class="pt-1 ms-2 float-end" alt="Filter by status">
+                    </button>
+                    <!-- <button class="d-inline bg-transparent fw-medium border small-12 ps-3 me-3"  :class="[lightMode ? 'text-dark' : 'text-white']" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Filter
+                      <img src="/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
+                    </button> -->
+                    <div class="dropdown-menu small-12 p-2 pt-3 pb-3 mt-2 px-0 w-100" aria-labelledby="dropdownMenuButton" role="button">
+                      <div class="dropdown-item fw-medium py-0 border-bottom">
+                        <div class="d-block form-check ps-0">
+                          <label class="form-check-label py-2" role="button" for="sortDraftsCheckbox">
+                            Net 1 Day
+                          </label>
+                        </div>
+                      </div>
+                      <div class="dropdown-item fw-medium py-0 border-bottom">
+                        <div class="d-block form-check ps-0">
+                          <label class="form-check-label py-3" role="button" for="sortPendingCheckbox">
+                            Net 7 Days
+                          </label>
+                        </div>
+                      </div>
+                      <div class="dropdown-item fw-medium py-0 border-bottom">
+                        <div class="d-block form-check ps-0">
+                          <label class="form-check-label py-3" role="button" for="sortPaidCheckbox">
+                            Net 14 Days
+                          </label>
+                        </div>
+                      </div>
+                      <div class="dropdown-item fw-medium py-0">
+                        <div class="d-block form-check ps-0">
+                          <label class="form-check-label pt-3" role="button" for="sortPaidCheckbox">
+                            Net 30 Days
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-md-12 mt-2 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+          <div class="col-md-12 mt-0" :class="[lightMode ? '' : 'text-light-light-purple', invoice.description.hasError ?  'text-error' : '']">
             <div class="w-100 d-flex justify-content-between">
               <span>Project Description</span>
-              <span>can't be empty</span>
+              <span v-if="invoice.description.hasError">can't be empty</span>
             </div>
-            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="">
+            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="invoice.description.value">
           </div>
         </div>
-        <div class="row small-12 text-light-purple">
-          <div class="col-md-12 mt-4 mb-3 fw-medium small-18" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Item List
+
+        <!-- Mobile Item List -->
+        <div class="d-lg-none">
+          <div class="row small-12 text-light-purple">
+            <div class="col-md-12 mt-4 mb-3 fw-medium small-18" :class="[lightMode ? '' : 'text-light-light-purple']">
+              Item List
+            </div>
           </div>
-          <div class="col-md-5 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Item Name
-          </div>
-          <div class="col-md-1-5 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Qty.
-          </div>
-          <div class="col-md-3 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Price
-          </div>
-          <div class="col-md-2-5 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
-            Total
+          <div v-for="(item, index) in invoice.items" :key="index" class="row d-flex align-items-center mb-3">
+            <div class="col-md-5 small-12 text-light-purple" :class="[lightMode ? '' : 'text-light-light-purple']">
+              Item Name
+            </div>
+            <div class="col-md-12">
+              <input class="form-control mt-2 mb-4 small-12 fw-medium p-3 has-error" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="item.name">
+            </div>
+            <div class="col-3 small-12 text-light-purple" :class="[lightMode ? '' : 'text-light-light-purple']">
+              Qty.
+            </div>
+            <div class="col-4 small-12 text-light-purple" :class="[lightMode ? '' : 'text-light-light-purple']">
+              Price
+            </div>
+            <div class="col-5 small-12 text-light-purple" :class="[lightMode ? '' : 'text-light-light-purple']">
+              Total
+            </div>
+            <div class="col-3 small-12 text-light-purple" :class="[lightMode ? '' : 'text-light-light-purple']">
+              <input class="form-control mt-2 mb-2 small-12 fw-medium p-3 has-error" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text"  value="10">
+            </div>
+            <div class="col-4 small-12 text-light-purple" :class="[lightMode ? '' : 'text-light-light-purple']">
+              <input class="form-control mt-2 mb-2 small-12 fw-medium p-3 has-error" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="100.00">
+            </div>
+            <div class="col-5 pb-3 small-12 fw-bold text-light-purple" :class="[lightMode ? '' : 'text-light-light-purple']">
+              400.00 <img class="float-end" @click="removeInvoiceItem(index)" role="button" src="/icon-delete.svg" alt="Delete">
+            </div>
           </div>
         </div>
-        <div class="row d-flex align-items-center">
-          <div class="col-md-5">
-            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="Email Design">
+
+        <!-- Desktop Item List -->
+        <div class="d-none d-lg-block">
+          <div class="row small-12 text-light-purple">
+            <div class="col-md-12 mt-4 mb-3 fw-medium small-18" :class="[lightMode ? '' : 'text-light-light-purple']">
+              Item List
+            </div>
+            <div class="col-md-5 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+              Item Name
+            </div>
+            <div class="col-md-1-5 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+              Qty.
+            </div>
+            <div class="col-md-3 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+              Price
+            </div>
+            <div class="col-md-2-5 text-error" :class="[lightMode ? '' : 'text-light-light-purple']">
+              Total
+            </div>
           </div>
-          <div class="col-md-1-5">
-            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="1">
+          <div v-for="(item, index) in invoice.items" :key="index" class="row d-flex align-items-center mb-2">
+            <div class="col-md-5">
+              <input class="form-control mt-2 small-12 fw-medium p-3 has-error" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="item.name" placeholder="Web development">
+            </div>
+            <div class="col-md-1-5">
+              <input class="form-control mt-2 small-12 fw-medium p-3 has-error" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="item.quantity">
+            </div>
+            <div class="col-md-3">
+              <input class="form-control mt-2 small-12 fw-medium p-3 has-error" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="item.price" placeholder="99.99">
+            </div>
+            <div class="col-md-2-5 text-light small-12 fw-medium">
+              {{ item.quantity * item.price }}
+              <img class="float-end" @click="removeInvoiceItem(index)" role="button" src="/icon-delete.svg" alt="Delete">
+            </div>
           </div>
-          <div class="col-md-3">
-            <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" value="156.00">
-          </div>
-          <div class="col-md-2-5 text-light small-12 fw-medium" :class="[lightMode ? '' : 'text-light-light-purple']">
-            115.00 
-            <img class="float-end" src="/icon-delete.svg" alt="Delete">
-          </div>
-          <!-- <div class="col-md-1"> -->
-          <!-- </div> -->
         </div>
         <div class="row">
           <div class="col-md-12">
-            <button class="btn btn-round small-12 w-100 p-3 my-3 px-4 fw-medium me-2" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']" >
+            <button @click="addNewInvoiceItem()" class="btn btn-round small-12 w-100 p-3 mt-2 mb-3 px-4 fw-medium me-2" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']" >
               + Add New Item
             </button>
           </div>
@@ -166,10 +248,13 @@
               Discard
             </button>
             <div class="float-end">
+              <button @click="validateNewInvoice()" class="btn bg-light text-dark btn-round small-12 p-3 me-2 px-4 fw-medium">
+                Validate
+              </button>
               <button class="btn btn-round small-12 p-3 px-4 fw-medium me-2" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNewInvoice">
                 Save as Draft
               </button>
-              <button class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNewInvoice">
+              <button @click="validateNewInvoice()" class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNewInvoice">
                 Save Changes
               </button>
             </div>
@@ -212,7 +297,6 @@
         </div>
       </div>
     </div>
-
     <slot />
   </div>
 </template>
@@ -235,7 +319,71 @@ export default defineComponent({
     document.body.classList.add("bg-light-light")
   },
   data: function () {
-    return {}
+    return {
+      invoice: {
+        "createdAt": "",
+        "paymentDue": "",
+        "description": {
+          value: "Branding",
+          hasError: false,
+        },
+        "paymentTerms": 1,
+        "clientName": {
+          value: "Jensen Huang",
+          hasError: false,
+        },
+        "clientEmail": {
+          value: "jensenh@mail.com",
+          hasError: false,
+        },
+        "status": "paid",
+        "senderAddress": {
+          "street": {
+            value: "19 Union Terrace",
+            hasError: false,
+          },
+          "city": {
+            value: "London",
+            hasError: false,
+          },
+          "postCode": {
+            value: "E1 3EZ",
+            hasError: false,
+          },
+          "country": {
+            value: "United Kingdom",
+            hasError: false,
+          }
+        },
+        "clientAddress": {
+          "street": {
+            value: "19 Union Terrace",
+            hasError: false,
+          },
+          "city": {
+            value: "London",
+            hasError: false,
+          },
+          "postCode": {
+            value: "E1 3EZ",
+            hasError: false,
+          },
+          "country": {
+            value: "United Kingdom",
+            hasError: false,
+          }
+        },
+        "items": [
+          {
+            "name": "Brand Guidelines",
+            "quantity": 1,
+            "price": 1800.90,
+            "total": 1800.90
+          }
+        ],
+        "total": 1800.90
+      },
+    }
   },
   methods: {
     alert: function (msg) {
@@ -245,7 +393,115 @@ export default defineComponent({
       useStore().toggleLightMode()
       // this.lightMode = useStore().lightMode
       // console.log('from store: ' + useStore().lightMode)
-    }
+    },
+    validateNewInvoice: function () {
+      // alert('Validate invoice form!')
+
+      let hasErrors = false
+
+      if (this.invoice.description.value === '') {
+        this.invoice.description.hasError = true
+        hasErrors = true
+      } else {
+        this.invoice.description.hasError = false
+      }
+
+      if (this.invoice.clientName.value === '') {
+        this.invoice.clientName.hasError = true
+        hasErrors = true
+      } else {
+        this.invoice.clientName.hasError = false
+      }
+
+      if (this.invoice.clientEmail.value === '') {
+        this.invoice.clientEmail.hasError = true
+        hasErrors = true
+      } else {
+        this.invoice.clientEmail.hasError = false
+      }
+
+      if (this.invoice.senderAddress.street.value === '') {
+        this.invoice.senderAddress.street.hasError = true
+        hasErrors = true
+      } else {
+        this.invoice.senderAddress.street.hasError = false
+      }
+
+      if (this.invoice.senderAddress.city.value === '') {
+        this.invoice.senderAddress.city.hasError = true
+        hasErrors = true
+      } else {
+        this.invoice.senderAddress.city.hasError =  false
+      }
+
+      if (this.invoice.senderAddress.postCode.value === '') {
+        this.invoice.senderAddress.postCode.hasError = true
+        hasErrors = true
+      } else {
+        this.invoice.senderAddress.postCode.hasError = false
+      }
+
+      if (this.invoice.senderAddress.country.value === '') {
+        this.invoice.senderAddress.country.hasError = true
+        hasErrors = true
+      } else {
+        this.invoice.senderAddress.country.hasError = false
+      }
+
+      if (this.invoice.clientAddress.street.value === '') {
+        this.invoice.clientAddress.street.hasError = true
+        hasErrors = true
+      } else {
+        this.invoice.clientAddress.street.hasError = false
+      }
+
+      if (this.invoice.clientAddress.city.value === '') {
+        this.invoice.clientAddress.city.hasError = true
+        hasErrors = true
+      } else {
+        this.invoice.clientAddress.city.hasError = false
+      }
+
+      if (this.invoice.clientAddress.postCode.value === '') {
+        this.invoice.clientAddress.postCode.hasError = true
+        hasErrors = true
+      } else {
+        this.invoice.clientAddress.postCode.hasError = false
+      }
+
+      if (this.invoice.clientAddress.country.value === '') {
+        this.invoice.clientAddress.country.hasError = true
+        hasErrors = true
+      } else {
+        this.invoice.clientAddress.country.hasError = false
+      }
+
+      this.$refs.myModal.scrollTo(0,0)
+    },
+    submitNewInvoice: function () {
+
+    },
+    addNewInvoiceItem: function () {
+      this.invoice.items.push(
+        {
+          "name": {
+            value: "",
+            hasError: true,
+          },
+          "quantity":  {
+            value: 1,
+            hasError: true,
+          },
+          "price":  {
+            value: "",
+            hasError: true,
+          },
+          "total":  {
+            value: "",
+            hasError: true,
+          }
+        })
+    },
   },
   watch: {
   // whenever active changes, this function will run

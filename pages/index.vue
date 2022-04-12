@@ -86,8 +86,7 @@
                   <div class="pt-4 d-flex justify-content-between small-15">
                     <div>
                       Due {{ convertDate(invoice.paymentDue) }} <br>
-                      <span class="d-block small-18 p-0 fw-bold mt-2" :class="[lightMode ? 'text-dark' : 'text-white']">
-                        £ {{ formatTotal(invoice.total) }}
+                      <span class="d-block small-18 p-0 text-start fw-bold mt-2 ps-0 ms-0" :class="[lightMode ? 'text-dark' : 'text-white']">£ {{ formatTotal(invoice.total) }}
                       </span>
                     </div>
                     <div>
@@ -191,7 +190,7 @@
             </div>
           </div>
         </div>
-        <div v-for="(invoice, index) in filteredInvoices" :key="index" @click="this.$router.push({path: '/invoice/' + invoice.id})" class="offset-md-2 col-md-8 text-light rounded px-4 py-3 mb-3 shadow hover" :class="[lightMode ? 'bg-white' : 'bg-dark-purple']" role="button">
+        <button v-for="(invoice, index) in filteredInvoices" :key="index" @click="this.$router.push({path: '/invoice/' + invoice.id})" class="border-0 offset-md-2 col-md-8 text-light rounded px-4 py-3 mb-3 shadow hover" :class="[lightMode ? 'bg-white' : 'bg-dark-purple']" role="button">
           <!-- <nuxt-link :to="'/invoice/' + invoice.id"> -->
             <div class="container p-0">
               <div class="row small-12 align-items-center">
@@ -208,19 +207,19 @@
                   £ {{ formatTotal(invoice.total) }}
                 </div>
                 <div class="col-md-3 text-end float-end py-0">
-                  <div v-if="invoice.status === 'pending'" class="d-inline-block w-104 text-orange bg-orange small-12 fw-medium p-3 ms-3 text-center rounded">
+                  <div v-if="invoice.status === 'pending'" class="d-inline-block w-104 text-orange bg-orange small-12 fw-medium p-3 ms-0 text-center rounded">
                     <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <circle cx="4" cy="4" r="4" fill="#FF8F00"/>
                     </svg>
                     {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
                   </div>
-                  <div v-else-if="invoice.status === 'paid'" class="d-inline-block w-104 text-green bg-green small-12 fw-medium p-3 ms-3 text-center rounded">
+                  <div v-else-if="invoice.status === 'paid'" class="d-inline-block w-104 text-green bg-green small-12 fw-medium p-3 ms-0 text-center rounded">
                     <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <circle cx="4" cy="4" r="4" fill="#33D69F"/>
                     </svg>
                     {{ invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) }}
                   </div>
-                  <div v-else class="d-inline-block w-104 small-12 fw-medium p-3 ms-3 text-center rounded" :class="[lightMode ? 'text-dark bg-grey' : 'bg-light-light-purple text-light-light-purple']">
+                  <div v-else class="d-inline-block w-104 small-12 fw-medium p-3 ms-0 text-center rounded" :class="[lightMode ? 'text-dark bg-grey' : 'bg-light-light-purple text-light-light-purple']">
                     <svg width="8" height="8" viewBox="0 0 8 8" class="mb-1 me-1" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <circle cx="4" cy="4" r="4" :fill="lightMode ? '#111' : '#FFF'"/>
                     </svg>
@@ -232,7 +231,7 @@
             </div>
           <!-- </nuxt-link> -->
 
-        </div>
+        </button>
       </div>
     </div>
   </div>
@@ -316,6 +315,10 @@ export default defineComponent({
 body, html {
   font-family: 'Spartan';
   /* background-color: #f8f9fa;  */
+}
+
+.smooth-scroll {
+  scroll-behavior: smooth;
 }
 
 a {
