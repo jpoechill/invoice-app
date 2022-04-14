@@ -16,11 +16,11 @@
                 <button class="d-inline bg-transparent fw-medium border-0 small-12 ps-3 me-3"  :class="[lightMode ? 'text-dark' : 'text-white']" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Filter<img src="/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
                 </button>
-                <div class="dropdown-menu small-12 p-2 pt-3 pb-2 mt-3" aria-labelledby="dropdownMenuButton">
+                <div class="dropdown-menu small-12 p-2 pt-3 pb-2 mt-3" :class="lightMode ? '' : 'bg-dark-purple'" aria-labelledby="dropdownMenuButton">
                   <div class="dropdown-item fw-medium py-0">
                     <div class="d-block form-check">
                       <input @click="toggleFilters('draft')" class="form-check-input" type="checkbox" v-model="filtersObj.draft" id="sortDraftsCheckbox">
-                      <label class="form-check-label pt-1-5" role="button" for="sortDraftsCheckbox">
+                      <label class="form-check-label pt-1-5" :class="lightMode ? '' : 'text-white'" role="button" for="sortDraftsCheckbox">
                         Draft
                       </label>
                     </div>
@@ -28,7 +28,7 @@
                   <div class="dropdown-item fw-medium py-0">
                     <div class="d-block form-check">
                       <input @click="toggleFilters('pending')" class="form-check-input" type="checkbox" v-model="filtersObj.pending" checked id="sortPendingCheckbox">
-                      <label class="form-check-label pt-1-5" role="button" for="sortPendingCheckbox">
+                      <label class="form-check-label pt-1-5" :class="lightMode ? '' : 'text-white'" role="button" for="sortPendingCheckbox">
                         Pending
                       </label>
                     </div>
@@ -36,7 +36,7 @@
                   <div class="dropdown-item fw-bold py-0">
                     <div class="d-block form-check">
                       <input @click="toggleFilters('paid')" class="form-check-input" type="checkbox" v-model="filtersObj.paid" checked id="sortPaidCheckbox">
-                      <label class="form-check-label pt-1-5" role="button" for="sortPaidCheckbox">
+                      <label class="form-check-label pt-1-5" :class="lightMode ? '' : 'text-white'" role="button" for="sortPaidCheckbox">
                         Paid
                       </label>
                     </div>
@@ -521,7 +521,11 @@ a {
 }
 
 .bg-dark-purple {
-  background-color: #1E2139;
+  background-color: #1E2139!important;
+}
+
+.bg-dark-dark-purple {
+  background-color: #252945!important;
 }
 
 .bg-light {
@@ -546,6 +550,10 @@ a {
 
 .bg-red {
   background-color: #EC5757;
+}
+
+.border-bottom-dark {
+  border-bottom: 1px solid #1E2139!important;
 }
 
 .btn-round {

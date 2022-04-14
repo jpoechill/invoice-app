@@ -107,13 +107,13 @@
               <div class="float-end w-100">
                 <div class="btn-group pt-2 w-100 ps-0">
                   <div class="dropdown d-inline w-100">
-                    <button class="form-control p-3 fw-medium small-12 w-100" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="form-control p-3 fw-medium small-12 w-100" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span class="float-start">
                         {{ selectedDate.full }}
                       </span>
                       <img src="/icon-calendar.svg" class="ms-2 float-end" alt="Filter by status">
                     </button>
-                    <div class="dropdown-menu small-12 p-2 pt-3 pb-2 mt-2 px-0 w-100" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-menu small-12 p-2 pt-3 pb-2 mt-2 px-0 w-100"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" aria-labelledby="dropdownMenuButton">
                       <div class="px-3 fw-medium py-0">
                         <div class="d-block form-check ps-0">
                           <!-- Date Picker Header -->
@@ -131,7 +131,7 @@
                           <!-- Date Body Header -->
                           <div class="w-100 my-3" v-for="(days, weekIndex) in daysInMonth" :key="weekIndex">
                             <div class="d-flex justify-content-between pe-1">
-                              <button @click="selectDay(day)" v-for="(day, dayIndex) in days" :key="dayIndex" class="p-0 small-12 fw-bold btn text-end" style="width: 2em">
+                              <button @click="selectDay(day)" v-for="(day, dayIndex) in days" :key="dayIndex" class="p-0 small-12 fw-bold btn text-end" :class="[lightMode ? '' : 'text-white']" style="width: 2em">
                                 <span v-if="day === selectedDate.day && selectedDate.year === currDate.year && selectedDate.month === currDate.month" class="text-purple">
                                   {{ day }}
                                 </span>
@@ -158,40 +158,15 @@
               <div class="float-end w-100">
                 <div class="btn-group pt-2 w-100 ps-0">
                   <div class="dropdown d-inline w-100">
-                    <button class="form-control p-3 fw-medium small-12 w-100" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="float-start">Net 30 Days </span>
+                    <button class="form-control p-3 fw-medium small-12 w-100" :class="[lightMode ? '' : 'text-white bg-dark-dark-purple border-0']" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="float-start"> {{ activePaymentTerm.name }} </span>
                       <img src="/icon-arrow-down.svg" class="pt-1 ms-2 float-end" alt="Filter by status">
                     </button>
-                    <!-- <button class="d-inline bg-transparent fw-medium border small-12 ps-3 me-3"  :class="[lightMode ? 'text-dark' : 'text-white']" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Filter
-                      <img src="/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
-                    </button> -->
-                    <div class="dropdown-menu small-12 p-2 pt-3 pb-3 mt-2 px-0 w-100" aria-labelledby="dropdownMenuButton" role="button">
-                      <div class="dropdown-item fw-medium py-0 border-bottom">
-                        <div class="d-block form-check ps-0">
-                          <label class="form-check-label py-2" role="button" for="">
-                            Net 1 Day
-                          </label>
-                        </div>
-                      </div>
-                      <div class="dropdown-item fw-medium py-0 border-bottom">
-                        <div class="d-block form-check ps-0">
-                          <label class="form-check-label py-3" role="button" for="">
-                            Net 7 Days
-                          </label>
-                        </div>
-                      </div>
-                      <div class="dropdown-item fw-medium py-0 border-bottom">
-                        <div class="d-block form-check ps-0">
-                          <label class="form-check-label py-3" role="button" for="">
-                            Net 14 Days
-                          </label>
-                        </div>
-                      </div>
-                      <div class="dropdown-item fw-medium py-0">
-                        <div class="d-block form-check ps-0">
-                          <label class="form-check-label pt-3" role="button" for="">
-                            Net 30 Days
+                    <div class="dropdown-menu small-12 p-2 pt-1 pb-0 mt-2 px-0 w-100"  :class="[lightMode ? '' : 'text-white bg-dark-dark-purple']" aria-labelledby="dropdownMenuButton" role="button">
+                      <div v-for="(term, index) in paymentTerms" :key="index" class="dropdown-item fw-medium py-0" :class="[lightMode ? '' : 'text-white', index !== paymentTerms.length - 1 && lightMode ? 'border-bottom' : '', index !== paymentTerms.length - 1 && !lightMode ? 'border-bottom-dark' : '']">
+                        <div @click="handlePaymentClick(term.value)" class="d-block form-check ps-0">
+                          <label class="form-check-label py-3" :class="[term.isActive === true ? 'text-purple' : '']" role="button">
+                            {{ term.name }}
                           </label>
                         </div>
                       </div>
@@ -275,7 +250,7 @@
               <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="number" v-model="item.price" placeholder="99.99">
             </div>
             <div class="col-md-3 text-light small-12 fw-medium">
-              {{ item.quantity.value * item.price.value }}
+              {{ '£ ' + formatTotal((Number(item.quantity.value) * Number(item.price))) }} 
               <img class="float-end" @click="removeInvoiceItem(index)" role="button" src="/icon-delete.svg" alt="Delete">
             </div>
           </div>
@@ -354,6 +329,9 @@ export default defineComponent({
     return { store }
   },
   computed: {
+    activePaymentTerm() {
+      return this.paymentTerms.find(x => x.isActive)
+    },
     lightMode() {
       return this.store.lightMode
     },
@@ -364,39 +342,32 @@ export default defineComponent({
   mounted() {
     document.body.classList.add("bg-light-light")
 
-    let date = new Date()
-
-    this.currDate.year = date.getFullYear()
-    this.currDate.month = date.getMonth() + 1
-    this.currDate.day = date.getDate()
-
-    this.selectedDate.full = this.formatMonth(this.currDate.month) + ' ' + this.currDate.day + ' ' + this.currDate.year
-    this.selectedDate.month = this.currDate.month
-    this.selectedDate.day = this.currDate.day
-    this.selectedDate.year = this.currDate.year
-
-
-    // Populate days in current month, first time only
-    let thisMonthSize = new Date(this.currDate.year, this.currDate.month, 0).getDate()
-    let firstDayOfWeek = new Date(this.currDate.year, this.currDate.month - 1, 1).getDay()
-    let arr = []
-
-    arr = [...Array(firstDayOfWeek).fill(' '),...arr]
-
-    for (let i = 1; i <= thisMonthSize; i++) {
-      if (arr.length < 7) {
-        arr.push(i)
-      } else {
-        this.daysInMonth.push(arr)
-        arr = [i]
-      }
-    }
-
-    arr = arr.concat(Array(7 - arr.length).fill(' '))
-    this.daysInMonth.push(arr)
+    this.initDateVals()
   },
   data: function () {
     return {
+      paymentTerms: [
+        {
+          name: 'Net 1 Day',
+          value: 1,
+          isActive: false,
+        },
+        {
+          name: 'Net 7 Days',
+          value: 7,
+          isActive: false,
+        },
+        {
+          name: 'Net 14 Days',
+          value: 14,
+          isActive: true,
+        },
+        {
+          name: 'Net 21 Days',
+          value: 21,
+          isActive: false,
+        },
+      ],
       invoice: {},
       selectedDate: {
         full: 'Oct 11 2022',
@@ -413,24 +384,79 @@ export default defineComponent({
     }
   },
   methods: {
+    formatTotal: function (n) {
+      if (!n) { return 0 }
+
+      let val = Math.round(Number(n) * 100) / 100;
+      let parts = val.toString().split(".");
+      let num = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + (parts[1] ? "." + parts[1] : "");
+
+      if (!num.split('').includes('.')) {
+        num = num + '.00'
+      } else if (num.split('.')[1].length === 1) {
+        num = num + '0'
+      }
+
+      return num
+    },
+    handlePaymentClick: function (value) {
+      this.paymentTerms = this.paymentTerms.map(x => {
+        if (x.value === value) {
+          x.isActive = true
+        } else {
+          x.isActive = false
+        }
+
+        return x
+      })
+    },
     alert: function (msg) {
       alert(msg)
+    },
+    initDateVals: function () {
+      let date = new Date()
+
+      this.currDate.year = date.getFullYear()
+      this.currDate.month = date.getMonth() + 1
+      this.currDate.day = date.getDate()
+
+      this.selectedDate.full = this.formatMonth(this.currDate.month) + ' ' + this.currDate.day + ' ' + this.currDate.year
+      this.selectedDate.month = this.currDate.month
+      this.selectedDate.day = this.currDate.day
+      this.selectedDate.year = this.currDate.year
+
+      // Populate days in current month, first time only
+      let thisMonthSize = new Date(this.currDate.year, this.currDate.month, 0).getDate()
+      let firstDayOfWeek = new Date(this.currDate.year, this.currDate.month - 1, 1).getDay()
+      let arr = []
+
+      arr = [...Array(firstDayOfWeek).fill(' '),...arr]
+
+      for (let i = 1; i <= thisMonthSize; i++) {
+        if (arr.length < 7) {
+          arr.push(i)
+        } else {
+          this.daysInMonth.push(arr)
+          arr = [i]
+        }
+      }
+
+      arr = arr.concat(Array(7 - arr.length).fill(' '))
+      this.daysInMonth.push(arr)
     },
     formatMonth: function (month) {
       let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
       return months[month - 1]
     },
     selectDay: function (day) {
-    this.currDate.day = day
+      this.currDate.day = day
 
-    this.selectedDate.full = this.formatMonth(this.currDate.month) + ' ' + this.currDate.day + ' ' + this.currDate.year
-    this.selectedDate.month = this.currDate.month
-    this.selectedDate.day = this.currDate.day
-    this.selectedDate.year = this.currDate.year
+      this.selectedDate.full = this.formatMonth(this.currDate.month) + ' ' + this.currDate.day + ' ' + this.currDate.year
+      this.selectedDate.month = this.currDate.month
+      this.selectedDate.day = this.currDate.day
+      this.selectedDate.year = this.currDate.year
     },
     navigateMonth: function(direction) {
-      console.log('go ' + direction)
-      
       if (direction === 'back') {
         if (this.currDate.month === 1) {
           this.currDate.month = 12
@@ -709,15 +735,18 @@ export default defineComponent({
             hasError: true,
           },
           "price":  {
-            value: "",
+            value: 1,
             hasError: true,
           },
           "total":  {
-            value: "",
+            value: 1,
             hasError: true,
           }
         }
       )
+    },
+    removeInvoiceItem: function (index) {
+      this.invoice.items.splice(index, 1)
     },
   },
   watch: {
