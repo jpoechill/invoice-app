@@ -96,6 +96,7 @@
             <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="invoice.clientAddress.country.value">
           </div>
         </div>
+        <!-- Invoice Date Dropdown -->
         <div class="row mt-3 small-12 text-light-purple">
           <div class="col-md-6 mb-3" :class="[lightMode ? '' : 'text-light-light-purple']">
             <div class="w-100 d-flex justify-content-between">
@@ -107,15 +108,39 @@
                 <div class="btn-group pt-2 w-100 ps-0">
                   <div class="dropdown d-inline w-100">
                     <button class="form-control p-3 fw-medium small-12 w-100" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="float-start">Oct 10 2025</span>
+                      <span class="float-start">
+                        {{ selectedDate.full }}
+                      </span>
                       <img src="/icon-calendar.svg" class="ms-2 float-end" alt="Filter by status">
                     </button>
-                    <div class="dropdown-menu small-12 p-2 pt-3 pb-3 mt-2 px-0 w-100" aria-labelledby="dropdownMenuButton" role="button">
-                      <div class="dropdown-item fw-medium py-0">
+                    <div class="dropdown-menu small-12 p-2 pt-3 pb-2 mt-2 px-0 w-100" aria-labelledby="dropdownMenuButton">
+                      <div class="px-3 fw-medium py-0">
                         <div class="d-block form-check ps-0">
-                          <label class="form-check-label py-2" role="button" for="sortDraftsCheckbox">
-                            Net 1 Day
-                          </label>
+                          <!-- Date Picker Header -->
+                          <div class="mb-2 d-flex justify-content-between">
+                            <div>
+                              <img @click="navigateMonth('back')" onclick="event.stopPropagation()" src="/icon-arrow-left.svg" role="button" alt="">
+                            </div>
+                            <div class="pt-1">
+                              <span>{{ formatMonth(currDate.month) + ' ' + currDate.year }}</span>
+                            </div>
+                            <div>
+                              <img @click="navigateMonth('forward')" onclick="event.stopPropagation()" src="/icon-arrow-right.svg" role="button" alt="">  
+                            </div>
+                          </div>
+                          <!-- Date Body Header -->
+                          <div class="w-100 my-3" v-for="(days, weekIndex) in daysInMonth" :key="weekIndex">
+                            <div class="d-flex justify-content-between pe-1">
+                              <button @click="selectDay(day)" v-for="(day, dayIndex) in days" :key="dayIndex" class="p-0 small-12 fw-bold btn text-end" style="width: 2em">
+                                <span v-if="day === selectedDate.day && selectedDate.year === currDate.year && selectedDate.month === currDate.month" class="text-purple">
+                                  {{ day }}
+                                </span>
+                                <span v-else>
+                                  {{ day }}
+                                </span>
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -144,28 +169,28 @@
                     <div class="dropdown-menu small-12 p-2 pt-3 pb-3 mt-2 px-0 w-100" aria-labelledby="dropdownMenuButton" role="button">
                       <div class="dropdown-item fw-medium py-0 border-bottom">
                         <div class="d-block form-check ps-0">
-                          <label class="form-check-label py-2" role="button" for="sortDraftsCheckbox">
+                          <label class="form-check-label py-2" role="button" for="">
                             Net 1 Day
                           </label>
                         </div>
                       </div>
                       <div class="dropdown-item fw-medium py-0 border-bottom">
                         <div class="d-block form-check ps-0">
-                          <label class="form-check-label py-3" role="button" for="sortPendingCheckbox">
+                          <label class="form-check-label py-3" role="button" for="">
                             Net 7 Days
                           </label>
                         </div>
                       </div>
                       <div class="dropdown-item fw-medium py-0 border-bottom">
                         <div class="d-block form-check ps-0">
-                          <label class="form-check-label py-3" role="button" for="sortPaidCheckbox">
+                          <label class="form-check-label py-3" role="button" for="">
                             Net 14 Days
                           </label>
                         </div>
                       </div>
                       <div class="dropdown-item fw-medium py-0">
                         <div class="d-block form-check ps-0">
-                          <label class="form-check-label pt-3" role="button" for="sortPaidCheckbox">
+                          <label class="form-check-label pt-3" role="button" for="">
                             Net 30 Days
                           </label>
                         </div>
@@ -241,7 +266,6 @@
           </div>
           <div v-for="(item, index) in invoice.items" :key="index" class="row d-flex align-items-center mb-2">
             <div class="col-md-4">
-              
               <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="item.name.value" placeholder="">
             </div>
             <div class="col-md-2">
@@ -265,14 +289,15 @@
         </div>
         <div class="row mt-3">
           <div class="col-md-12">
-            <button class="btn bg-light text-light text-dark btn-round small-12 p-3 px-4 fw-medium me-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNewInvoice">
+            <button @click="clearInvoiceForm()" class="btn bg-light text-light text-dark btn-round small-12 p-3 px-4 fw-medium me-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNewInvoice">
               Discard
             </button>
             <div class="float-end">
               <button @click="submitNewDraft()" class="btn btn-round small-12 p-3 px-4 fw-medium me-2" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNewInvoice">
                 Save as Draft
               </button>
-              <button @click="submitNewInvoice()" class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNewInvoice">
+              <button @click="submitNewInvoice()" class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium">
+                <!--  data-bs-toggle="offcanvas" data-bs-target="#offcanvasNewInvoice" -->
                 Save and Send
               </button>
             </div>
@@ -333,91 +358,113 @@ export default defineComponent({
       return this.store.lightMode
     },
   },
+  created () {
+    this.clearInvoiceForm()
+  },
   mounted() {
     document.body.classList.add("bg-light-light")
+
+    let date = new Date()
+
+    this.currDate.year = date.getFullYear()
+    this.currDate.month = date.getMonth() + 1
+    this.currDate.day = date.getDate()
+
+    this.selectedDate.full = this.formatMonth(this.currDate.month) + ' ' + this.currDate.day + ' ' + this.currDate.year
+    this.selectedDate.month = this.currDate.month
+    this.selectedDate.day = this.currDate.day
+    this.selectedDate.year = this.currDate.year
+
+
+    // Populate days in current month, first time only
+    let thisMonthSize = new Date(this.currDate.year, this.currDate.month, 0).getDate()
+    let firstDayOfWeek = new Date(this.currDate.year, this.currDate.month - 1, 1).getDay()
+    let arr = []
+
+    arr = [...Array(firstDayOfWeek).fill(' '),...arr]
+
+    for (let i = 1; i <= thisMonthSize; i++) {
+      if (arr.length < 7) {
+        arr.push(i)
+      } else {
+        this.daysInMonth.push(arr)
+        arr = [i]
+      }
+    }
+
+    arr = arr.concat(Array(7 - arr.length).fill(' '))
+    this.daysInMonth.push(arr)
   },
   data: function () {
     return {
-      invoice: {
-        "createdAt": "",
-        "paymentDue": "",
-        "description": {
-          value: "Branding",
-          hasError: false,
-        },
-        "paymentTerms": 1,
-        "clientName": {
-          value: "Jensen Huang",
-          hasError: false,
-        },
-        "clientEmail": {
-          value: "jensenh@mail.com",
-          hasError: false,
-        },
-        "status": "paid",
-        "senderAddress": {
-          "street": {
-            value: "19 Union Terrace",
-            hasError: false,
-          },
-          "city": {
-            value: "London",
-            hasError: false,
-          },
-          "postCode": {
-            value: "E1 3EZ",
-            hasError: false,
-          },
-          "country": {
-            value: "United Kingdom",
-            hasError: false,
-          }
-        },
-        "clientAddress": {
-          "street": {
-            value: "19 Union Terrace",
-            hasError: false,
-          },
-          "city": {
-            value: "London",
-            hasError: false,
-          },
-          "postCode": {
-            value: "E1 3EZ",
-            hasError: false,
-          },
-          "country": {
-            value: "United Kingdom",
-            hasError: false,
-          }
-        },
-        "items": [
-          {
-            "name": {
-              value: "Brand Guidelines",
-              hasError: true,
-            },
-            "quantity":  {
-              value: 1,
-              hasError: true,
-            },
-            "price":  {
-              value: "1800.90",
-              hasError: true,
-            },
-            "total":  {
-              value: "1800.90",
-              hasError: true,
-            }
-          }
-        ],
-        "total": 1800.90
+      invoice: {},
+      selectedDate: {
+        full: 'Oct 11 2022',
+        month: '',
+        day: '',
+        year: '',
       },
+      daysInMonth: [],
+      currDate: {
+        year: 0,
+        month: 0,
+        day: 0
+      }
     }
   },
   methods: {
     alert: function (msg) {
       alert(msg)
+    },
+    formatMonth: function (month) {
+      let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      return months[month - 1]
+    },
+    selectDay: function (day) {
+    this.currDate.day = day
+
+    this.selectedDate.full = this.formatMonth(this.currDate.month) + ' ' + this.currDate.day + ' ' + this.currDate.year
+    this.selectedDate.month = this.currDate.month
+    this.selectedDate.day = this.currDate.day
+    this.selectedDate.year = this.currDate.year
+    },
+    navigateMonth: function(direction) {
+      console.log('go ' + direction)
+      
+      if (direction === 'back') {
+        if (this.currDate.month === 1) {
+          this.currDate.month = 12
+          this.currDate.year--
+        } else {
+          this.currDate.month--
+        }
+      } else {
+        if (this.currDate.month === 12) {
+          this.currDate.month = 1
+          this.currDate.year++
+        } else {
+          this.currDate.month++
+        }
+      }
+
+      this.daysInMonth = []
+      let thisMonthSize = new Date(this.currDate.year, this.currDate.month, 0).getDate()
+      let firstDayOfWeek = new Date(this.currDate.year, this.currDate.month - 1, 1).getDay()
+      let arr = []
+
+      arr = [...Array(firstDayOfWeek).fill(' '),...arr]
+
+      for (let i = 1; i <= thisMonthSize; i++) {
+        if (arr.length < 7) {
+          arr.push(i)
+        } else {
+          this.daysInMonth.push(arr)
+          arr = [i]
+        }
+      }
+
+      arr = arr.concat(Array(7 - arr.length).fill(' '))
+      this.daysInMonth.push(arr)
     },
     toggleLightMode: function () {
       useStore().toggleLightMode()
@@ -538,6 +585,8 @@ export default defineComponent({
             "total": this.invoice.total
           }
         )
+
+        this.clearInvoiceForm()
       } else {
         console.log('Please check form errors')
       }
@@ -568,6 +617,85 @@ export default defineComponent({
           "total": this.invoice.total
         }
       )
+
+      this.clearInvoiceForm()
+    },
+    clearInvoiceForm: function () {
+      this.invoice = {
+        "createdAt": "",
+        "paymentDue": "",
+        "description": {
+          value: "",
+          hasError: false,
+        },
+        "paymentTerms": 1,
+        "clientName": {
+          value: "",
+          hasError: false,
+        },
+        "clientEmail": {
+          value: "",
+          hasError: false,
+        },
+        "status": "draft",
+        "senderAddress": {
+          "street": {
+            value: "",
+            hasError: false,
+          },
+          "city": {
+            value: "",
+            hasError: false,
+          },
+          "postCode": {
+            value: "",
+            hasError: false,
+          },
+          "country": {
+            value: "",
+            hasError: false,
+          }
+        },
+        "clientAddress": {
+          "street": {
+            value: "",
+            hasError: false,
+          },
+          "city": {
+            value: "",
+            hasError: false,
+          },
+          "postCode": {
+            value: "",
+            hasError: false,
+          },
+          "country": {
+            value: "",
+            hasError: false,
+          }
+        },
+        "items": [
+          {
+            "name": {
+              value: "",
+              hasError: true,
+            },
+            "quantity":  {
+              value: 1,
+              hasError: true,
+            },
+            "price":  {
+              value: "0",
+              hasError: true,
+            },
+            "total":  {
+              value: "0",
+              hasError: true,
+            }
+          }
+        ],
+        "total": 0
+      }
     },
     addNewInvoiceItem: function () {
       this.invoice.items.push(

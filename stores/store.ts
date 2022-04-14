@@ -29,6 +29,14 @@ export const useStore = defineStore('storeId', {
     submitNewDraft: function (payload) {
       payload.id = makeid()
       payload.status = 'draft'
+      payload.items = payload.items.map((x) => {
+        return {
+          "name": x.name.value,
+          "quantity": x.quantity.value,
+          "price": x.price.value,
+          "total": x.total.value
+        }
+      })
       payload.createdAt = getDate()
       payload.paymentDue = futureDate()
 
