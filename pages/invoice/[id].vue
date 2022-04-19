@@ -153,14 +153,19 @@
                           <!-- Date Body Header -->
                           <div class="w-100 my-3" v-for="(days, weekIndex) in daysInMonth" :key="weekIndex">
                             <div class="d-flex justify-content-between pe-1">
-                              <button @click="selectDay(day)" v-for="(day, dayIndex) in days" :key="dayIndex" class="p-0 small-12 fw-bold btn text-end" :class="[lightMode ? '' : 'text-white']" style="width: 2em">                                
-                                <span v-if="day == selectedDate.day && selectedDate.year === currDate.year && selectedDate.month === currDate.month" class="text-purple">
-                                  {{ day }}
-                                </span>
-                                <span v-else>
-                                  {{ day }}
-                                </span>
-                              </button>
+                              <div v-for="(day, dayIndex) in days" :key="dayIndex">
+                                <div v-if="day === ' '">
+                                  <button class="border-0 p-0 m-0 noClick" style="width: 2em"></button>
+                                </div>
+                                <button v-else @click="selectDay(day)" class="p-0 small-12 fw-bold btn text-end" :class="[lightMode ? '' : 'text-white']" style="width: 2em">
+                                  <span v-if="day === selectedDate.day && selectedDate.year === currDate.year && selectedDate.month === currDate.month" class="text-purple">
+                                    {{ day }}
+                                  </span>
+                                  <span v-else>
+                                    {{ day }}
+                                  </span>
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -293,7 +298,7 @@
         <div class="row mt-3">
           <div class="col-md-12">
             <div class="float-end">
-              <button class="btn btn-round small-12 p-3 px-4 fw-medium me-2" ref="oogabooga" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample">
+              <button @click="manualToggle()" class="btn btn-round small-12 p-3 px-4 fw-medium me-2" ref="oogabooga" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample">
                 Cancel
               </button>
               <button @click="updateInvoice()" class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium">
@@ -330,7 +335,7 @@
     <div class="container pt-5 pb-4 px-3 px-md-0 small-11">
       <div class="row px-4 px-md-0 pt-5 mt-3 pt-lg-4 mt-lg-0 pb-5 mb-3 mb-lg-0 pb-lg-0"> 
         <div class="offset-lg-2 col-lg-8 col-12 fw-medium">
-          <nuxt-Link to="/" :class="[lightMode ? 'text-dark' : 'text-white']">
+          <nuxt-Link to="/" class="p-2" :class="[lightMode ? 'text-dark' : 'text-white']">
             <img src="/icon-arrow-left.svg" alt="Go Back Arrow" class="me-3">
             Go back
           </nuxt-Link>
@@ -762,7 +767,10 @@ export default defineComponent({
   methods: {
     manualToggle: function () {
       let closeCanvas = this.$refs.oogabooga
-      closeCanvas.click();
+      this.fetchInvoice()
+      this.hasErrors = false
+      // closeCanvas.blur()
+      // closeCanvas.click()
     },
     handlePaymentClick: function (value) {
       this.paymentTerms = this.paymentTerms.map(x => {

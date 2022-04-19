@@ -3,7 +3,7 @@
     <!-- New Invoice Modal -->
     <!--  p-special -->
     <!-- {{ this.$refs }} -->
-    <div class="offcanvas offcanvas-start-custom border-0" ref="offCanvas" style="width: 750px;" tabindex="-1" id="offcanvasNewInvoice" aria-labelledby="offcanvasNewInvoiceLabel">
+    <div class="offcanvas offcanvas-start-custom border-0" ref="offCanvas" style="width: 750px;" tabindex="0" id="offcanvasNewInvoice" aria-labelledby="offcanvasNewInvoiceLabel">
       <div class="container p-special p-5 mt-5 mt-lg-0 offcanvas-body smooth-scroll"  :class="[lightMode ? '' : 'bg-dark']" ref="newInvoiceModal">
         <div class="row">
           <div class="col-md-12">
@@ -114,7 +114,7 @@
                       </span>
                       <img src="/icon-calendar.svg" class="ms-2 float-end" alt="Filter by status">
                     </button>
-                    <div class="dropdown-menu small-12 p-2 pt-3 pb-2 mt-2 px-0 w-100"  :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-menu small-12 p-2 pt-3 pb-2 mt-2 px-0 w-100" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" aria-labelledby="dropdownMenuButton">
                       <div class="px-3 fw-medium py-0">
                         <div class="d-block form-check ps-0">
                           <!-- Date Picker Header -->
@@ -132,14 +132,20 @@
                           <!-- Date Body Header -->
                           <div class="w-100 my-3" v-for="(days, weekIndex) in daysInMonth" :key="weekIndex">
                             <div class="d-flex justify-content-between pe-1">
-                              <button @click="selectDay(day)" v-for="(day, dayIndex) in days" :key="dayIndex" class="p-0 small-12 fw-bold btn text-end" :class="[lightMode ? '' : 'text-white']" style="width: 2em">
-                                <span v-if="day === selectedDate.day && selectedDate.year === currDate.year && selectedDate.month === currDate.month" class="text-purple">
-                                  {{ day }}
-                                </span>
-                                <span v-else>
-                                  {{ day }}
-                                </span>
-                              </button>
+                              <div v-for="(day, dayIndex) in days" :key="dayIndex">
+                                <div v-if="day === ' '">
+                                  <button class="p-0 m-0 noClick border-0" style="width: 2em"></button>
+                                </div>
+                                <button v-else @click="selectDay(day)" class="p-0 small-12 fw-bold btn text-end" :class="[lightMode ? '' : 'text-white']" style="width: 2em">
+                                  <span v-if="day === selectedDate.day && selectedDate.year === currDate.year && selectedDate.month === currDate.month" class="text-purple">
+                                    {{ day }}
+                                  </span>
+                                  <span v-else>
+                                    {{ day }}
+                                  </span>
+                                </button>
+                              </div>
+                              
                             </div>
                           </div>
                         </div>
@@ -288,7 +294,7 @@
     </div>
 
     <!-- Mobile Nav -->
-    <div class="d-lg-none fixed-top w-100 bg-dark-blue text-white d-inline-flex justify-content-between" style="height: 70px; z-index: 9999;">
+    <nav class="d-lg-none d-block fixed-top w-100 bg-dark-blue text-white d-inline-flex justify-content-between" style="height: 70px; z-index: 9999;" tabindex="1">
       <div class="mb-auto position-relative bg-purple d-flex align-items-center overflow-hidden vertical-align-middle rounded-bottom-right rounded-top-right" style="height: 70px; width: 70px;">
         <nuxt-link to="/" class="mx-auto" style="z-index: 9999;">
           <img src="/logo.svg" alt="Logo">
@@ -303,10 +309,10 @@
           <img src="/image-avatar.jpg" class="rounded-full" alt="Image Avatar">
         </div>
       </div>
-    </div>
+    </nav>
 
     <!-- Desktop Nav -->
-    <div class="d-lg-block d-none">
+    <nav class="d-lg-block d-none" tabindex="0">
       <div class="fixed-top h-100 bg-dark-blue text-white d-flex flex-column align-items-start rounded-bottom-right rounded-top-right " style="width: 90px; z-index: 9999;">
         <div class="mb-auto position-relative bg-purple d-flex align-items-center overflow-hidden w-100 vertical-align-middle rounded-top-right rounded-bottom-right" style="height: 90px; width: 90px;">
           <nuxt-link to="/" class="mx-auto" style="z-index: 9999;">
@@ -315,12 +321,14 @@
           <div class="position-absolute top-50 w-100 rounded-top-left bg-light-purple h-100"></div>
         </div>
         <div @click="toggleLightMode" class="w-100 mx-auto text-center py-3" id="toggleLM" style="z-index: 99999;" role="button">
-          <img  :src="lightMode ? '/icon-sun.svg' : '/icon-moon.svg'" class="noClick" alt="Toggle Light/Dark Mode">
+          <button class="btn">
+            <img  :src="lightMode ? '/icon-sun.svg' : '/icon-moon.svg'" class="noClick" role="button" alt="Toggle Light/Dark Mode">
+          </button>
           <hr class="">
           <img src="/image-avatar.jpg" class="rounded-full" alt="Image Avatar">
         </div>
       </div>
-    </div>
+    </nav>
     <slot />
   </div>
 </template>
