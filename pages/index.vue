@@ -49,7 +49,7 @@
                 <img src="/icon-plus.svg" alt="">
               </div>
               <span class="d-inline-block me-2">
-                New Invoice 
+                New Invoice
               </span>
             </button>
 
@@ -163,12 +163,12 @@
               </div>
             </div>
           </div>
-          <button data-bs-toggle="offcanvas" href="#offcanvasNewInvoice" role="button" aria-controls="offcanvasNewInvoice" class="btn d-inline bg-purple btn-round text-white small-12 p-2 fw-medium">
+          <button @click="showOffCanvas()"  data-bs-toggle="offcanvas" href="#offcanvasNewInvoice" role="button" aria-controls="offcanvasNewInvoice" class="btn d-inline bg-purple btn-round text-white small-12 p-2 fw-medium">
             <div class="d-inline-flex align-items-center me-2 justify-content-center text-dark btn-round bg-white p-2" style="height: 30px; width: 30px;">
               <img src="/icon-plus.svg" alt="">
             </div>
             <span class="d-inline-block me-2">
-              New Invoice 
+              New Invoice
             </span>
           </button>
         </div>
@@ -279,17 +279,13 @@ export default defineComponent({
     }
   },
   methods: {
+    showOffCanvas: function () {
+      console.log('open')
+
+      document.getElementById('offcanvasNewInvoice').classList.add('transform-special')
+    },
     toggleFilters: function (filterItem) {
-      // let index = this.filters.indexOf(filterItem)
-
-      console.log('click: ' + filterItem)
-
       this.filtersObj[filterItem] = !this.filtersObj[filterItem]
-      // if (index >= 0) {
-      //   this.filters.splice(index, 1)
-      // } else {
-      //   this.filters.push(filterItem)
-      // }
     },
     formatTotal: function (n) {
       let val = Math.round(Number(n) * 100) / 100;

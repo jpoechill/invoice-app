@@ -7,12 +7,10 @@ export const useStore = defineStore('storeId', {
     return {
       ...data,
       lightMode: true,
-      oogabooga: 'cat and the hat'
     }
   },
   actions:{
-    toggleLightMode() {
-      console.log(this.lightMode)
+    toggleLightMode(event) {
       this.lightMode = !this.lightMode
     },
     deleteInvoice(id){
@@ -21,8 +19,8 @@ export const useStore = defineStore('storeId', {
     submitNewInvoice: function (payload) {
       payload.id = makeid()
       payload.status = 'pending'
-      payload.createdAt = getDate()
-      payload.paymentDue = futureDate()
+
+      console.log(payload)
 
       this.invoices.push(payload)
     },
@@ -37,8 +35,8 @@ export const useStore = defineStore('storeId', {
           "total": x.total.value
         }
       })
-      payload.createdAt = getDate()
-      payload.paymentDue = futureDate()
+      // payload.createdAt = getDate()
+      // payload.paymentDue = futureDate()
 
       this.invoices.push(payload)
     },
@@ -61,6 +59,9 @@ export const useStore = defineStore('storeId', {
       })
     },
     updateInvoice(id, payload){
+
+      console.log(id, payload)
+
       this.invoices = this.invoices.map(x => {
         if (x.id === id) {
           x = payload
@@ -73,7 +74,6 @@ export const useStore = defineStore('storeId', {
   getters:{
     // getCount:(state)=>state.counter,
     getLightMode: (state)=> {
-      console.log('123')
       console.log(state.lightMode)
       state.lightMode
     }

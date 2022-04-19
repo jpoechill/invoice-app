@@ -23,8 +23,8 @@
     </div>
     
     <!-- Edit Modal -->
-    <div class="offcanvas offcanvas-start p-special" :class="[lightMode ? 'bg-white' : 'bg-dark']" style="width: 750px;" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-      <div class="container p-5 mt-5 mt-lg-0 offcanvas-body smooth-scroll" ref="editModal">
+    <div class="offcanvas offcanvas-start-custom" style="width: 750px;" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+      <div class="container p-special ps-0 p-5 mt-5 mt-lg-0 offcanvas-body smooth-scroll" ref="editModal" :class="[lightMode ? 'bg-white' : 'bg-dark']" >
         <div class="row">
           <div class="col-md-12">
             <div class="small-24" :class="[lightMode ? '' : 'text-light-light-purple']">
@@ -218,7 +218,7 @@
               Item Name
             </div>
             <div class="col-md-12">
-              <input class="form-control mt-2 mb-4 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="item.name.value" placeholder="">
+              <input class="form-control mt-2 mb-4 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0', item.name.hasError ? 'has-error' : '']" type="text" v-model="item.name.value" placeholder="">
             </div>
             <div class="col-3 small-12 text-light-purple" :class="[lightMode ? '' : 'text-light-light-purple']">
               Qty.
@@ -229,11 +229,12 @@
             <div class="col-5 small-12 text-light-purple" :class="[lightMode ? '' : 'text-light-light-purple']">
               Total
             </div>
+            {{ item }}
             <div class="col-3 small-12 text-light-purple" :class="[lightMode ? '' : 'text-light-light-purple']">
-              <input class="form-control mt-2 mb-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0', item.quantity.hasError ? 'has-error' : '']" type="text" v-model="item.quantity.value" placeholder="">
+              <input class="form-control mt-2 mb-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0', item.quantity.hasError ? 'has-error' : '']" type="number" v-model="item.quantity.value" placeholder="">
             </div>
             <div class="col-4 small-12 text-light-purple" :class="[lightMode ? '' : 'text-light-light-purple']">
-              <input class="form-control mt-2 mb-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0', item.price.hasError ? 'has-error' : '']" type="text" v-model="item.price.value" placeholder="">
+              <input class="form-control mt-2 mb-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0', item.price.hasError ? 'has-error' : '']" type="number" v-model="item.price.value" placeholder="">
             </div>
             <div class="col-5 pb-3 small-12 fw-bold text-light-purple" :class="[lightMode ? '' : 'text-light-light-purple']">
               {{ '£ ' + formatTotal((item.quantity.value * item.price.value)) }} <img class="float-end" @click="removeInvoiceItem(index)" role="button" src="/icon-delete.svg" alt="Delete">
@@ -262,13 +263,13 @@
           </div>
           <div v-for="(item, index) in invoiceValidation.items" :key="index" class="row d-flex align-items-center mb-2">
             <div class="col-md-4">
-              <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="text" v-model="item.name.value" placeholder="">
+              <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0', item.name.hasError ? 'has-error' : '']" type="text" min="0" v-model="item.name.value" placeholder="">
             </div>
             <div class="col-md-2">
-              <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="number" v-model="item.quantity.value">
+              <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0', item.quantity.hasError ? 'has-error' : '']" type="number" min="0" v-model="item.quantity.value">
             </div>
             <div class="col-md-3">
-              <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0']" type="number" v-model="item.price.value" placeholder="">
+              <input class="form-control mt-2 small-12 fw-medium p-3" :class="[lightMode ? '' : 'text-white bg-dark-purple border-0', item.price.hasError ? 'has-error' : '']" type="number" min="0" v-model="item.price.value" placeholder="">
             </div>
             <div class="col-md-3 text-light small-12 fw-medium">
               {{ '£ ' + formatTotal((item.quantity.value * item.price.value)) }}
@@ -277,21 +278,25 @@
           </div>
         </div>
         
-        <div class="row mb-5">
+        <div class="row mb-0">
           <div class="col-md-12 mt-3">
-            <button @click="addNewInvoiceItem()" class="btn btn-round small-12 w-100 p-3 mt-2 mb-3 px-4 fw-medium me-2" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']">
+            <button @click="addNewInvoiceItem()" class="btn btn-round small-12 w-100 p-3 mt-2 pb-3 px-4 mb-2 fw-medium me-2" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']">
               + Add New Item
             </button>
+          </div>
+        </div>
+        <div class="row mt-4 pb-3" v-if="hasErrors">
+          <div class="col-md-12 small-12 text-error">
+            • All fields must be added
           </div>
         </div>
         <div class="row mt-3">
           <div class="col-md-12">
             <div class="float-end">
-              <button class="btn btn-round small-12 p-3 px-4 fw-medium me-2" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample">
+              <button class="btn btn-round small-12 p-3 px-4 fw-medium me-2" ref="oogabooga" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample">
                 Cancel
               </button>
               <button @click="updateInvoice()" class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium">
-                <!-- data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" -->
                 Save Changes
               </button>
             </div>
@@ -378,7 +383,7 @@
             </div>
           </div>
           <div class="d-inline float-end d-none d-lg-block">
-            <button class="btn bg-light text-light text-dark btn-round small-12 p-3 px-4 fw-medium me-2" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+            <button class="btn bg-light btn-round small-12 p-3 px-4 fw-medium me-2" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
               Edit
             </button>
             <button data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn bg-red text-white btn-round small-12 p-3 px-4 fw-medium me-2">
@@ -563,7 +568,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -595,6 +599,7 @@ export default defineComponent({
   },
   data() {
     return {
+      hasErrors: false,
       paymentTerms: [
         {
           name: 'Net 1 Day',
@@ -618,7 +623,7 @@ export default defineComponent({
         },
       ],
       selectedDate: {
-        full: 'Oct 11 2022',
+        full: '',
         month: '',
         day: '',
         year: '',
@@ -755,16 +760,42 @@ export default defineComponent({
     }
   },
   methods: {
+    manualToggle: function () {
+      let closeCanvas = this.$refs.oogabooga
+      closeCanvas.click();
+    },
     handlePaymentClick: function (value) {
       this.paymentTerms = this.paymentTerms.map(x => {
         if (x.value === value) {
           x.isActive = true
+
+          this.invoiceValidation.paymentTerms = x.value
+          this.updatePaymentDue()
         } else {
           x.isActive = false
         }
 
         return x
       })
+    },
+    updatePaymentDue: function () {
+      // get current date
+      // get days left in month
+      // add remainder days to subsequent month
+      // update payment due date
+
+      let daysInMonth = new Date(this.selectedDate.year, this.selectedDate.month, 0).getDate()
+      let paymentTerms = Number(this.invoiceValidation.paymentTerms)
+      let selectedDay = Number(this.selectedDate.day)
+
+      if (selectedDay + paymentTerms > daysInMonth) {
+        let difference = (selectedDay + paymentTerms) - daysInMonth
+        this.invoiceValidation.paymentDue = this.selectedDate.year + '-' + String(this.selectedDate.month + 1).padStart(2, '0') + '-' + String(difference).padStart(2, '0')
+      } else {
+        this.invoiceValidation.paymentDue = this.selectedDate.year + '-' + String(this.selectedDate.month).padStart(2, '0') + '-' + String(selectedDay + paymentTerms).padStart(2, '0')
+      }
+
+      console.log(this.invoiceValidation.paymentDue)
     },
     initDateVals: function () {
       // Populate days in current month, first time only
@@ -785,8 +816,6 @@ export default defineComponent({
 
       arr = arr.concat(Array(7 - arr.length).fill(' '))
       this.daysInMonth.push(arr)
-
-      console.log('2')
     },
     formatMonth: function (month) {
       let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -799,6 +828,8 @@ export default defineComponent({
       this.selectedDate.month = this.currDate.month
       this.selectedDate.day = this.currDate.day
       this.selectedDate.year = this.currDate.year
+
+      this.updatePaymentDue()
     },
     navigateMonth: function(direction) {
       if (direction === 'back') {
@@ -944,7 +975,6 @@ export default defineComponent({
         }),
         "total": softCopy.total
       }
-      console.log('1')
     },
     alert: function (msg) {
       alert(msg)
@@ -1033,7 +1063,17 @@ export default defineComponent({
         this.invoiceValidation.clientAddress.country.hasError = false
       }
 
+      for (let i = 0; i < this.invoiceValidation.items.length; i++) {
+        if (this.invoiceValidation.items[i].name.value === '') {
+          this.invoiceValidation.items[i].name.hasError = true
+          hasErrors = true
+        } else {
+          this.invoiceValidation.items[i].name.hasError = false
+        }
+      }
+
       if (hasErrors) {
+        this.hasErrors = true
         this.$refs.editModal.scrollTo(0,0)
         return false
       } else {
@@ -1041,16 +1081,51 @@ export default defineComponent({
       }
     },
     updateInvoice: function (id) {
-      console.log('Validate: ' + this.validateNewInvoice())
-      
-      // this.invoiceCopy.items = this.invoiceCopy.items.map(x => {
-      //   x.total = x.quantity * x.price
+      if (this.validateNewInvoice()) {
 
-      //   return x
-      // })
+        let updated = {
+          "id": this.invoice.id,
+          "createdAt": this.selectedDate.year + '-' + (this.selectedDate.month - 1) + '-' + this.selectedDate.day,
+          "paymentDue": this.invoiceValidation.paymentDue,
+          "description": this.invoiceValidation.description.value,
+          "paymentTerms": this.paymentTerms.find((x) => x.isActive).value,
+          "clientName": this.invoiceValidation.clientName.value,
+          "clientEmail": this.invoiceValidation.clientEmail.value,
+          "status": 'pending',
+          "senderAddress": {
+            "street": this.invoiceValidation.senderAddress.street.value,
+            "city": this.invoiceValidation.senderAddress.city.value,
+            "postCode": this.invoiceValidation.senderAddress.postCode.value,
+            "country": this.invoiceValidation.senderAddress.country.value,
+          },
+          "clientAddress": {
+            "street": this.invoiceValidation.clientAddress.street.value,
+            "city": this.invoiceValidation.clientAddress.city.value,
+            "postCode": this.invoiceValidation.clientAddress.postCode.value,
+            "country": this.invoiceValidation.clientAddress.country.value,
+          },
+          "items": this.invoiceValidation.items.map(x => {
+            return {
+              "name": x.name.value,
+              "quantity": x.quantity.value,
+              "price": x.price.value,
+              "total": x.quantity.value * x.price.value
+            }
+          }),
+        }
 
-      // useStore().updateInvoice(this.invoice.id, this.invoiceCopy)
-      // this.fetchInvoice()
+        let sum = 0
+
+        for (let i = 0; i < updated.items.length; i++) {
+          sum += updated.items[i].total
+        }
+
+        updated['total'] = sum
+       
+        this.manualToggle()
+        this.store.updateInvoice(this.invoice.id, updated)
+        this.fetchInvoice()
+      }
     },
     markInvoicePaid: function () {
       useStore().markInvoicePaid(this.invoice.id)
@@ -1070,7 +1145,7 @@ export default defineComponent({
             hasError: false,
           },
           "price":  {
-            value: "",
+            value: 99,
             hasError: false,
           },
           "total":  {
@@ -1080,7 +1155,9 @@ export default defineComponent({
         })
     },
     removeInvoiceItem: function (index) {
-      this.invoiceValidation.items.splice(index, 1)
+      if (this.invoiceValidation.items.length !== 1) {
+        this.invoiceValidation.items.splice(index, 1)
+      }
     },
     convertDate: (date) => {
       date = date.split('-')
@@ -1097,13 +1174,13 @@ export default defineComponent({
 /* Big screen devices (889px and above) */
 @media only screen and (min-width: 992px) {
   .p-special {
-    padding-left: 90px; 
+    padding-left: 134px!important; 
   }
 }
 
 @media only screen and (max-width: 992px) {
   .p-special {
-    padding-left: 0px; 
+    padding-left: 42px!important; 
   }
 }
 </style>
