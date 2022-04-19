@@ -13,7 +13,7 @@
           <div class="float-end">
             <div class="btn-group pt-2 ps-0">
               <div class="dropdown d-inline">
-                <button class="d-inline bg-transparent fw-medium border-0 small-12 ps-3 me-3"  :class="[lightMode ? 'text-dark' : 'text-white']" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="d-inline bg-transparent fw-medium border-0 small-12 ps-0 me-3"  :class="[lightMode ? 'text-dark' : 'text-white']" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Filter<img src="/icon-arrow-down.svg" class="ms-2" alt="Filter by status">
                 </button>
                 <div class="dropdown-menu small-12 p-2 pt-3 pb-2 mt-3" :class="lightMode ? '' : 'bg-dark-purple'" aria-labelledby="dropdownMenuButton">
