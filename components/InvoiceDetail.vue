@@ -298,7 +298,7 @@
         <div class="row mt-3">
           <div class="col-md-12">
             <div class="float-end">
-              <button @click="manualToggle()" class="btn btn-round small-12 p-3 px-4 fw-medium me-2" ref="oogabooga" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample">
+              <button @click="manualToggle()" class="btn btn-round small-12 p-3 px-4 fw-medium me-2" ref="closeModal" :class="[lightMode ? 'bg-light text-dark' : 'bg-light-light-purple text-light-light-purple']" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample">
                 Cancel
               </button>
               <button @click="updateInvoice()" class="btn bg-purple text-white btn-round small-12 p-3 px-4 fw-medium">
@@ -766,11 +766,10 @@ export default defineComponent({
   },
   methods: {
     manualToggle: function () {
-      let closeCanvas = this.$refs.oogabooga
+      let closeCanvas = this.$refs.closeModal
       this.fetchInvoice()
       this.hasErrors = false
-      // closeCanvas.blur()
-      // closeCanvas.click()
+      closeCanvas.click()
     },
     handlePaymentClick: function (value) {
       this.paymentTerms = this.paymentTerms.map(x => {

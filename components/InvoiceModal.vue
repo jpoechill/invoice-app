@@ -670,6 +670,7 @@ export default defineComponent({
       )
 
       this.clearInvoiceForm()
+      
     },
     clearInvoiceForm: function () {
       this.hasErrors = false
